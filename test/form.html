@@ -235,14 +235,13 @@
       const message = document.getElementById("message").value.trim();
       const kpayReceipt = document.getElementById("kpayReceipt").files[0];
       const text =
-        "📩 New Form Submission\n\n" +
-        "👤 Name: " + name + "\n" +
-        "📞 Phone: " + phone + "\n" +
-        "🏠 Address: " + address + "\n" +
-        "💬 Message: " + message;
+        " Name: " + name + "\n" +
+        " Phone: " + phone + "\n" +
+        " Address: " + address + "\n" +
+        " Message: " + message;
 
       submitBtn.disabled = true;
-      statusEl.textContent = "ပို့နေပါသည်...";
+      statusEl.textContent = "Sending to Admin...";
 
       try {
         const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -260,7 +259,7 @@
 
         if (response.ok && data.ok) {
           const photoUploads = [
-            { file: kpayReceipt, caption: "🧾 KPay ငွေလွှဲပြေစာ" }
+            { file: kpayReceipt, caption: " KPay ငွေလွှဲပြေစာ" }
           ];
 
           for (const photo of photoUploads) {
@@ -280,13 +279,13 @@
             }
           }
 
-          statusEl.textContent = "✅ Telegram ထဲသို့ ပို့ပြီးပါပြီ။";
+          statusEl.textContent = "✅ Admin တွေဘက်မှ Order ကိုစစ်ဆေးပြီးတာနဲ့ဆက်သွယ်လိုက်ပါမယ်";
           form.reset();
         } else {
-          statusEl.textContent = "❌ မအောင်မြင်ပါ: " + (data.description || "Unknown error");
+          statusEl.textContent = "မအောင်မြင်ပါ: " + (data.description || "Unknown error");
         }
       } catch (error) {
-        statusEl.textContent = "❌ " + (error.message || "Network error ဖြစ်နေပါသည်။");
+        statusEl.textContent = "အမှား: " + (error.message || "Network error ဖြစ်နေပါသည်။");
       } finally {
         submitBtn.disabled = false;
       }
