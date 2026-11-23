@@ -19,16 +19,25 @@
         <nav class="navbar navbar-expand-lg fixed-top site-navbar" aria-label="Main Navigation">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold" href="#home">KODEX</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation"
-                    aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+
+                <div class="mobile-nav-actions d-lg-none ms-auto">
+                    <button class="mobile-cart-button" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Open shopping cart">
+                        <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+                        <span id="cartCountMobile" class="mobile-cart-count" aria-live="polite">0</span>
+                    </button>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
                 <div class="collapse navbar-collapse" id="mainNavigation">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#about">Shop</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                        <li class="nav-item ms-lg-3">
+                        <li class="nav-item ms-lg-3 d-none d-lg-block">
                             <button class="btn btn-outline-dark cart-toggle" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#shoppingCart" aria-controls="shoppingCart">
                                 <i class="fa-solid fa-bag-shopping me-2" aria-hidden="true"></i>
@@ -76,7 +85,7 @@
                                 </div>
                                 <p>Air Jordan 1 Mid <span class="shoe-color"></span></p>
 
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
 
                             <div class="image-container" data-color="Blue">
@@ -86,7 +95,7 @@
                                 </div>
                                 <p>Air Jordan 1 Mid <span class="shoe-color"></span></p>
 
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
 
                             <div class="image-container" data-color="Navy">
@@ -96,7 +105,7 @@
                                 </div>
                                 <p>Air Jordan 1 Mid <span class="shoe-color"></span></p>
 
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
 
                             <div class="image-container" data-color="Black">
@@ -106,7 +115,7 @@
                                 </div>
                                 <p>Air Jordan 1 Mid <span class="shoe-color"></span></p>
 
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
 
                             <div class="image-container" data-color="Silver">
@@ -116,7 +125,7 @@
                                 </div>
                                 <p>Air Jordan 1 Mid <span class="shoe-color"></span></p>
 
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
 
 
@@ -136,7 +145,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>Air Jordan 5 Retro <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Pink">
                                 <div class="image-wrapper">
@@ -144,7 +153,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Air Jordan 5 Retro <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Red">
                                 <div class="image-wrapper">
@@ -152,7 +161,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Air Jordan 5 Retro <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Blue">
                                 <div class="image-wrapper">
@@ -160,7 +169,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Air Jordan 5 Retro <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i
@@ -178,7 +187,7 @@
                                         decoding="async" />
                                 </div>
                                 <p>AJMVP92 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Black / White">
                                 <div class="image-wrapper">
@@ -186,7 +195,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>AJMVP92 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Blue">
                                 <div class="image-wrapper">
@@ -194,7 +203,7 @@
                                         decoding="async" />
                                 </div>
                                 <p>AJMVP92 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Red">
                                 <div class="image-wrapper">
@@ -202,7 +211,7 @@
                                         decoding="async" />
                                 </div>
                                 <p>AJMVP92 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White">
                                 <div class="image-wrapper">
@@ -210,7 +219,7 @@
                                         decoding="async" />
                                 </div>
                                 <p>AJMVP92 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i
@@ -227,7 +236,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Jordan Spizike Low <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Blue">
                                 <div class="image-wrapper">
@@ -235,7 +244,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Jordan Spizike Low <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Brown">
                                 <div class="image-wrapper">
@@ -243,7 +252,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Jordan Spizike Low <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White">
                                 <div class="image-wrapper">
@@ -251,7 +260,7 @@
                                         class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Jordan Spizike Low <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i
@@ -268,7 +277,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>Killshort 2 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Brown">
                                 <div class="image-wrapper">
@@ -276,7 +285,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>Killshort 2 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Coffee">
                                 <div class="image-wrapper">
@@ -284,7 +293,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>Killshort 2 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Gray">
                                 <div class="image-wrapper">
@@ -292,7 +301,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>Killshort 2 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White">
                                 <div class="image-wrapper">
@@ -300,7 +309,7 @@
                                         loading="lazy" decoding="async" />
                                 </div>
                                 <p>Killshort 2 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Standard">
                                 <div class="image-wrapper">
@@ -308,7 +317,7 @@
                                         decoding="async" />
                                 </div>
                                 <p>Killshort 2 <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i
@@ -327,21 +336,21 @@
                                         alt="204L Arid Stone with Thunder Brown" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>204L <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Bayberry / Lone Star Grey">
                                 <div class="image-wrapper"><img src="./img/204L BAYBERRY with LONE STAR GREY.jpg"
                                         alt="204L Bayberry with Lone Star Grey" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>204L <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Black / Black Cement">
                                 <div class="image-wrapper"><img src="./img/204L BLACK with BLACK CEMENT.jpg"
                                         alt="204L Black with Black Cement" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>204L <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Breakfast Tea / Quicksand / Light Arctic Grey">
                                 <div class="image-wrapper"><img
@@ -349,21 +358,21 @@
                                         alt="204L Breakfast Tea with Quicksand" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>204L <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Mushroom / Arid Stone">
                                 <div class="image-wrapper"><img src="./img/204L MUSHROOM with ARID STONE.jpg"
                                         alt="204L Mushroom with Arid Stone" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>204L <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Sea Salt / Pistachio Butter">
                                 <div class="image-wrapper"><img src="./img/204L SEA SALT with PISTACHIO BUTTER.jpg"
                                         alt="204L Sea Salt with Pistachio Butter" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>204L <span class="shoe-color"></span></p>
-                                <button class="buy-button" type="button">Add to cart</button>
+                                <button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i
@@ -377,49 +386,37 @@
                                 <div class="image-wrapper"><img src="./img/950 BLACK with WHITE.jpg"
                                         alt="950 Black with White" class="shooes" loading="lazy" decoding="async" />
                                 </div>
-                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">Add
-                                    to
-                                    cart</button>
+                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Angora">
                                 <div class="image-wrapper"><img src="./img/950 WHITE with ANGORA.jpg"
                                         alt="950 White with Angora" class="shooes" loading="lazy" decoding="async" />
                                 </div>
-                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">Add
-                                    to
-                                    cart</button>
+                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Black">
                                 <div class="image-wrapper"><img src="./img/950 WHITE with BLACK.jpg"
                                         alt="950 White with Black" class="shooes" loading="lazy" decoding="async" />
                                 </div>
-                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">Add
-                                    to
-                                    cart</button>
+                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Outfield">
                                 <div class="image-wrapper"><img src="./img/950 WHITE with OUTFIELD.jpg"
                                         alt="950 White with Outfield" class="shooes" loading="lazy" decoding="async" />
                                 </div>
-                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">Add
-                                    to
-                                    cart</button>
+                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Podium Red">
                                 <div class="image-wrapper"><img src="./img/950 WHITE with PODIUM RED.jpg"
                                         alt="950 White with Podium Red" class="shooes" loading="lazy"
                                         decoding="async" /></div>
-                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">Add
-                                    to
-                                    cart</button>
+                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White / Team Red">
                                 <div class="image-wrapper"><img src="./img/950 WHITE with TEAM RED.jpg"
                                         alt="950 White with Team Red" class="shooes" loading="lazy" decoding="async" />
                                 </div>
-                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">Add
-                                    to
-                                    cart</button>
+                                <p>950 <span class="shoe-color"></span></p><button class="buy-button" type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i
@@ -438,37 +435,32 @@
                                         alt="Baya Clog Bright Cobalt" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Baya Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Electric Pink">
                                 <div class="image-wrapper"><img src="./img/Baya Clog Electric Pink.jpg"
                                         alt="Baya Clog Electric Pink" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Baya Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Khaki">
                                 <div class="image-wrapper"><img src="./img/Baya Clog Khaki.jpg" alt="Baya Clog Khaki"
                                         class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Baya Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Pepper">
                                 <div class="image-wrapper"><img src="./img/Baya Clog Pepper.jpg" alt="Baya Clog Pepper"
                                         class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Baya Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White">
                                 <div class="image-wrapper"><img src="./img/Baya Clog white.jpg" alt="Baya Clog White"
                                         class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Baya Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="arrow-container"><button type="button" class="previous-button"
                                     aria-label="Previous"><i class="fa-solid fa-chevron-left"
@@ -482,46 +474,40 @@
                                 <div class="image-wrapper"><img src="./img/Classic Clog BLACK.jpg"
                                         alt="Classic Clog Black" class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Classic Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Blue Bolt">
                                 <div class="image-wrapper"><img src="./img/Classic Clog BLUE BOLT.jpg"
                                         alt="Classic Clog Blue Bolt" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Classic Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Field Green">
                                 <div class="image-wrapper"><img src="./img/Classic Clog Field Green.jpg"
                                         alt="Classic Clog Field Green" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Classic Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Navy">
                                 <div class="image-wrapper"><img src="./img/Classic Clog NAVY.jpg"
                                         alt="Classic Clog Navy" class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Classic Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Utility Orange">
                                 <div class="image-wrapper"><img src="./img/Classic Clog Utility Orange.jpg"
                                         alt="Classic Clog Utility Orange" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>Classic Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="White">
                                 <div class="image-wrapper"><img src="./img/Classic Clog white.jpg"
                                         alt="Classic Clog White" class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Classic Clog <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="arrow-container"><button type="button" class="previous-button"
                                     aria-label="Previous"><i class="fa-solid fa-chevron-left"
@@ -539,48 +525,42 @@
                                         alt="H-Street OG Fizzy Green" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>H-Street OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Frosted Ivory / PUMA Silver">
                                 <div class="image-wrapper"><img src="./img/H-Street OG Frosted Ivory-PUMA Silver.jpg"
                                         alt="H-Street OG Frosted Ivory" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>H-Street OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="PUMA Black / PUMA Silver">
                                 <div class="image-wrapper"><img src="./img/H-Street OG PUMA Black-PUMA Silver.jpg"
                                         alt="H-Street OG PUMA Black" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>H-Street OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="PUMA Red / PUMA Silver">
                                 <div class="image-wrapper"><img src="./img/H-Street OG PUMA Red-PUMA Silver.jpg"
                                         alt="H-Street OG PUMA Red" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>H-Street OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="PUMA Team Royal / PUMA Black">
                                 <div class="image-wrapper"><img src="./img/H-Street OG PUMA Team Royal-PUMA Black.jpg"
                                         alt="H-Street OG PUMA Team Royal" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>H-Street OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Sun Stream / PUMA Gold">
                                 <div class="image-wrapper"><img src="./img/H-Street OG Sun Stream-PUMA Gold.jpg"
                                         alt="H-Street OG Sun Stream" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>H-Street OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="arrow-container"><button type="button" class="previous-button"
                                     aria-label="Previous"><i class="fa-solid fa-chevron-left"
@@ -594,47 +574,41 @@
                                         alt="Palermo Alpine Snow" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Palermo <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Earthy Green / Buttercream">
                                 <div class="image-wrapper"><img src="./img/Palermo Earthy Green-Buttercream.jpg"
                                         alt="Palermo Earthy Green" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Palermo <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Loden Green / Gum">
                                 <div class="image-wrapper"><img src="./img/Palermo Loden Green-Gum.jpg"
                                         alt="Palermo Loden Green" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Palermo <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Matte Bronze / Silver Fog">
                                 <div class="image-wrapper"><img src="./img/Palermo Matte Bronze-Silver Fog.jpg"
                                         alt="Palermo Matte Bronze" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Palermo <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Vermillion / Gum">
                                 <div class="image-wrapper"><img src="./img/Palermo Vermillion-Gum.jpg"
                                         alt="Palermo Vermillion" class="shooes" loading="lazy" decoding="async" /></div>
                                 <p>Palermo <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Vibrant Silver / Gum">
                                 <div class="image-wrapper"><img src="./img/Palermo Vibrant Silver-Gum.jpg"
                                         alt="Palermo Vibrant Silver" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Palermo <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="arrow-container"><button type="button" class="previous-button"
                                     aria-label="Previous"><i class="fa-solid fa-chevron-left"
@@ -648,48 +622,42 @@
                                         alt="Speedcat OG Emerald Ice" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Speedcat OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Red / PUMA White">
                                 <div class="image-wrapper"><img src="./img/Speedcat OG For All Time Red-PUMA White.jpg"
                                         alt="Speedcat OG For All Time Red" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>Speedcat OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="New Navy / Warm White">
                                 <div class="image-wrapper"><img src="./img/Speedcat OG New Navy-Warm White.jpg"
                                         alt="Speedcat OG New Navy" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Speedcat OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="PUMA Black / PUMA White">
                                 <div class="image-wrapper"><img src="./img/Speedcat OG PUMA Black-PUMA White.jpg"
                                         alt="Speedcat OG PUMA Black" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Speedcat OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="PUMA Team Royal / PUMA White">
                                 <div class="image-wrapper"><img src="./img/Speedcat OG PUMA Team Royal-PUMA White.jpg"
                                         alt="Speedcat OG PUMA Team Royal" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>Speedcat OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Pelé Yellow / PUMA Black">
                                 <div class="image-wrapper"><img src="./img/Speedcat OG Pelé Yellow-PUMA Black.jpg"
                                         alt="Speedcat OG Pele Yellow" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Speedcat OG <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="arrow-container"><button type="button" class="previous-button"
                                     aria-label="Previous"><i class="fa-solid fa-chevron-left"
@@ -703,40 +671,35 @@
                                         alt="Suede Forever Cashew Brown" class="shooes" loading="lazy"
                                         decoding="async" /></div>
                                 <p>Suede Forever <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="PUMA Black / Gold">
                                 <div class="image-wrapper"><img src="./img/Suede Forever PUMA Black-Gold.jpg"
                                         alt="Suede Forever PUMA Black" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Suede Forever <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Red Rhythm / Gum">
                                 <div class="image-wrapper"><img src="./img/Suede Forever Red Rhythm-Gum.jpg"
                                         alt="Suede Forever Red Rhythm" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Suede Forever <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Silver Fog / Gum">
                                 <div class="image-wrapper"><img src="./img/Suede Forever Silver Fog-Gum.jpg"
                                         alt="Suede Forever Silver Fog" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Suede Forever <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="image-container" data-color="Kona Brown / Gum">
                                 <div class="image-wrapper"><img src="./img/orever Kona Brown-Gum.jpg"
                                         alt="Suede Forever Kona Brown" class="shooes" loading="lazy" decoding="async" />
                                 </div>
                                 <p>Suede Forever <span class="shoe-color"></span></p><button class="buy-button"
-                                    type="button">Add to
-                                    cart</button>
+                                    type="button">More info</button>
                             </div>
                             <div class="arrow-container">
                                 <button type="button" class="previous-button" aria-label="Previous"><i class="fa-solid fa-chevron-left"aria-hidden="true"></i></button>
@@ -749,6 +712,7 @@
 
         </section>
     </main>
+
 
     <footer id="contact" class="site-footer">
         <div class="container py-4">
@@ -764,11 +728,52 @@
                         data-bs-target="#shoppingCart" aria-controls="shoppingCart">Shopping cart</button>
                 </div>
                 <div class="col-12 text-md-end">
-                    <small>&copy; <span id="currentYear"></span> KODEx. All rights reserved.</small>
+                    <small>&copy; <span id="currentYear"></span> KODEX. All rights reserved.</small>
                 </div>
             </div>
         </div>
     </footer>
+
+    <div class="modal fade" id="orderFormModal" tabindex="-1" aria-labelledby="orderFormTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-sm-down">
+            <div class="modal-content order-form-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title h5" id="orderFormTitle">Complete your order</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close order form"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <iframe id="orderFormFrame" src="about:blank" data-src="./test/form.html"
+                        title="KODEX order form" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="productInfoModal" tabindex="-1" aria-labelledby="productInfoTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content product-info-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title h4" id="productInfoTitle">Product details</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close product details"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center g-4">
+                        <div class="col-12 col-md-6">
+                            <div class="product-info-image">
+                                <img id="productInfoImage" src="" alt="" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <p class="text-secondary mb-1">Selected style</p>
+                            <h3 id="productInfoName" class="h3"></h3>
+                            <p class="mb-4"><strong>Color:</strong> <span id="productInfoColor"></span></p>
+                            <button id="productInfoCartButton" class="btn btn-dark" type="button">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="shoppingCart" aria-labelledby="shoppingCartTitle">
         <div class="offcanvas-header">
@@ -778,6 +783,7 @@
         <div class="offcanvas-body d-flex flex-column">
             <p id="cartEmpty" class="text-secondary">Your cart is empty.</p>
             <ul id="cartItems" class="list-group list-group-flush" aria-live="polite"></ul>
+            <button id="checkoutCart" class="btn btn-dark mt-3" type="button" disabled>Order</button>
             <button id="clearCart" class="btn btn-outline-secondary mt-auto" type="button" disabled>
                 Clear cart
             </button>

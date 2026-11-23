@@ -1,8 +1,6 @@
 /* ---------- Image galleries (one colour carousel per shoe) ---------- */
 document.querySelectorAll(".image-gallery").forEach((gallery) => {
     const cards = [...gallery.querySelectorAll(".image-container")];
-    const previousButton = gallery.querySelector(".previous-button");
-    const nextButton = gallery.querySelector(".next-button");
     let currentIndex = 0;
 
     // Name of the shoe, used for accessible labels
@@ -10,12 +8,68 @@ document.querySelectorAll(".image-gallery").forEach((gallery) => {
     gallery.setAttribute("role", "group");
     gallery.setAttribute("aria-label", `${shoeName} colors`);
 
-    // "1 of 5" indicator so people know there are more colors
-    cards.forEach((card, index) => {
-        const position = document.createElement("small");
-        position.className = "color-position";
-        position.textContent = `Color ${index + 1} of ${cards.length}`;
-        card.querySelector(".buy-button").before(position);
+    cards.forEach((card) => {
+        card.querySelector(".color-position")?.remove();
+    });
+
+    const arrowContainer = gallery.querySelector(".arrow-container");
+    arrowContainer.replaceChildren();
+    arrowContainer.className = "color-cycle";
+
+    const colorMap = {
+        black: "#202124",
+        white: "#ffffff",
+        red: "#d52b2b",
+        blue: "#2563eb",
+        navy: "#172554",
+        silver: "#a7adb4",
+        gray: "#7b8086",
+        grey: "#7b8086",
+        brown: "#7a4a32",
+        coffee: "#6f4e37",
+        green: "#2f855a",
+        "bright cobalt": "#0057d9",
+        "electric pink": "#ec4899",
+        khaki: "#c3b091",
+        pepper: "#5b5b5b",
+        orange: "#ea580c",
+        yellow: "#eab308",
+        gold: "#c5a047",
+        pink: "#ec4899",
+        bronze: "#a76d43",
+        beige: "#d7c3a2",
+    };
+
+    function getColorSwatch(colorName) {
+        const parts = colorName.toLowerCase().split(/\s*\/\s*/);
+        const colors = parts.map((part) => {
+            const direct = colorMap[part.trim()];
+            if (direct) return direct;
+            const matchedName = Object.keys(colorMap).find((name) => part.includes(name));
+            return matchedName ? colorMap[matchedName] : "#c8cbd0";
+        });
+
+        if (colors.length === 1) return colors[0];
+        if (colors.length === 2) {
+            return `conic-gradient(from 90deg, ${colors[0]} 0deg 180deg, ${colors[1]} 180deg 360deg)`;
+        }
+        return `conic-gradient(${colors.map((color, index) =>
+            `${color} ${Math.round((index * 360) / colors.length)}deg ${Math.round(((index + 1) * 360) / colors.length)}deg`
+        ).join(", ")})`;
+    }
+
+    const dots = cards.map((card, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "color-dot";
+        dot.style.setProperty("--swatch", getColorSwatch(card.dataset.color));
+        dot.setAttribute("aria-label", `Show ${shoeName} color ${index + 1}: ${card.dataset.color}`);
+        dot.addEventListener("click", () => {
+            currentIndex = index;
+            showCurrentCard();
+        });
+        arrowContainer.append(dot);
+        return dot;
     });
 
     function preload(index) {
@@ -32,7 +86,18 @@ document.querySelectorAll(".image-gallery").forEach((gallery) => {
 
             if (isCurrent) {
                 card.querySelector(".shoe-color").textContent = card.dataset.color;
+                card.insertBefore(arrowContainer, card.querySelector(".buy-button"));
+                if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    card.classList.remove("color-changing");
+                    void card.offsetWidth;
+                    card.classList.add("color-changing");
+                }
             }
+        });
+        dots.forEach((dot, index) => {
+            const isCurrent = index === currentIndex;
+            dot.classList.toggle("active", isCurrent);
+            dot.setAttribute("aria-current", isCurrent ? "true" : "false");
         });
         // Warm up the neighbours so the next click feels instant
         preload((currentIndex + 1) % cards.length);
@@ -40,20 +105,7 @@ document.querySelectorAll(".image-gallery").forEach((gallery) => {
     }
 
     if (cards.length < 2) {
-        gallery.querySelector(".arrow-container").hidden = true;
-    } else {
-        previousButton.setAttribute("aria-label", `Previous ${shoeName} color`);
-        nextButton.setAttribute("aria-label", `Next ${shoeName} color`);
-
-        previousButton.addEventListener("click", () => {
-            currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-            showCurrentCard();
-        });
-
-        nextButton.addEventListener("click", () => {
-            currentIndex = (currentIndex + 1) % cards.length;
-            showCurrentCard();
-        });
+        arrowContainer.hidden = true;
     }
 
     showCurrentCard();
@@ -63,9 +115,11 @@ document.querySelectorAll(".image-gallery").forEach((gallery) => {
 const STORAGE_KEY = "shoe-cart";
 const cart = new Map();
 const cartCount = document.querySelector("#cartCount");
+const cartCountMobile = document.querySelector("#cartCountMobile");
 const cartItems = document.querySelector("#cartItems");
 const cartEmpty = document.querySelector("#cartEmpty");
 const clearCartButton = document.querySelector("#clearCart");
+const checkoutCartButton = document.querySelector("#checkoutCart");
 
 function loadCart() {
     try {
@@ -111,9 +165,11 @@ function createQuantityButton(label, text, onClick) {
 function renderCart() {
     const itemCount = [...cart.values()].reduce((total, item) => total + item.quantity, 0);
     cartCount.textContent = itemCount;
+    cartCountMobile.textContent = itemCount;
     cartItems.replaceChildren();
     cartEmpty.hidden = cart.size > 0;
     clearCartButton.disabled = cart.size === 0;
+    checkoutCartButton.disabled = cart.size === 0;
 
     cart.forEach((item, key) => {
         const row = document.createElement("li");
@@ -163,31 +219,44 @@ function renderCart() {
 }
 
 document.querySelectorAll(".buy-button").forEach((button) => {
-    button.dataset.label = button.textContent.trim();
-    let resetTimer;
-
     button.addEventListener("click", () => {
         const card = button.closest(".image-container");
         const productName = card.querySelector("p").childNodes[0].textContent.trim();
         const color = card.dataset.color;
-        const key = `${productName}::${color}`;
-        const item = cart.get(key);
+        const image = card.querySelector("img");
 
-        if (item) {
-            item.quantity += 1;
-        } else {
-            cart.set(key, { name: productName, color, quantity: 1 });
-        }
+        document.querySelector("#productInfoTitle").textContent = `${productName} details`;
+        document.querySelector("#productInfoName").textContent = productName;
+        document.querySelector("#productInfoColor").textContent = color;
 
-        renderCart();
+        const infoImage = document.querySelector("#productInfoImage");
+        infoImage.src = image.src;
+        infoImage.alt = `${productName} in ${color}`;
 
-        // Reset from the stored label so rapid clicks can't leave the button stuck on "Added"
-        clearTimeout(resetTimer);
-        button.textContent = "Added to cart";
-        resetTimer = setTimeout(() => {
-            button.textContent = button.dataset.label;
-        }, 1200);
+        document.querySelector("#productInfoCartButton").dataset.name = productName;
+        document.querySelector("#productInfoCartButton").dataset.color = color;
+
+        bootstrap.Modal.getOrCreateInstance("#productInfoModal").show();
     });
+});
+
+document.querySelector("#productInfoCartButton").addEventListener("click", (event) => {
+    const { name, color } = event.currentTarget.dataset;
+    const key = `${name}::${color}`;
+    const item = cart.get(key);
+
+    if (item) {
+        item.quantity += 1;
+    } else {
+        cart.set(key, { name, color, quantity: 1 });
+    }
+
+    renderCart();
+    event.currentTarget.textContent = "Added to cart";
+    clearTimeout(event.currentTarget.resetTimer);
+    event.currentTarget.resetTimer = setTimeout(() => {
+        event.currentTarget.textContent = "Add to cart";
+    }, 1200);
 });
 
 clearCartButton.addEventListener("click", () => {
@@ -195,9 +264,40 @@ clearCartButton.addEventListener("click", () => {
     renderCart();
 });
 
+checkoutCartButton.addEventListener("click", () => {
+    if (cart.size === 0) return;
+
+    const shoppingCartPanel = document.querySelector("#shoppingCart");
+    const openOrderForm = () => {
+        const orderFormFrame = document.querySelector("#orderFormFrame");
+        if (orderFormFrame.getAttribute("src") === "about:blank") {
+            orderFormFrame.src = orderFormFrame.dataset.src;
+        }
+        bootstrap.Modal.getOrCreateInstance(document.querySelector("#orderFormModal")).show();
+    };
+
+    shoppingCartPanel.addEventListener("hidden.bs.offcanvas", openOrderForm, { once: true });
+    bootstrap.Offcanvas.getOrCreateInstance(shoppingCartPanel).hide();
+});
+
 document.querySelector("#currentYear").textContent = new Date().getFullYear();
 loadCart();
 renderCart();
+
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const revealItems = document.querySelectorAll(".image-gallery, .shoe-group h3, .airjordan-group h3");
+    revealItems.forEach((item) => item.classList.add("reveal-ready"));
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.12 });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+}
 
 /* ---------- Navigation ---------- */
 const navigation = document.querySelector("#mainNavigation");
