@@ -501,6 +501,31 @@ main {
     color: #c4c7c5;
 }
 
+.footer-team {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+}
+
+.footer-team strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #e8eaed;
+}
+
+.footer-team strong i {
+    color: #b94a28;
+}
+
+.footer-team-members {
+    margin-top: 0.15rem;
+    color: #e8eaed;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
 /* ---------- Contact ---------- */
 
 .contact-section {
