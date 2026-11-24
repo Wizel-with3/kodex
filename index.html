@@ -13,37 +13,43 @@
     <title>KODEX</title>
 </head>
 
-<body>
-    <a class="visually-hidden-focusable skip-link" href="#about">Skip to products</a>
+<body data-theme="light">
+    <a class="visually-hidden-focusable skip-link" href="#about" data-i18n="skipProducts">Skip to products</a>
     <header>
-        <nav class="navbar navbar-expand-lg fixed-top site-navbar" aria-label="Main Navigation">
+        <nav class="navbar navbar-expand-lg fixed-top site-navbar" aria-label="Main Navigation" data-i18n-aria-label="mainNavigation">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold" href="#home">KODEX</a>
 
                 <div class="mobile-nav-actions d-lg-none ms-auto">
                     <button class="mobile-cart-button" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Open shopping cart">
+                        data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Open shopping cart"
+                        data-i18n-aria-label="openCart">
                         <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
                         <span id="cartCountMobile" class="mobile-cart-count" aria-live="polite">0</span>
                     </button>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation"
-                        aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="mainNavigation" aria-expanded="false" aria-label="Toggle navigation"
+                        data-i18n-aria-label="toggleNavigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                 </div>
 
                 <div class="collapse navbar-collapse" id="mainNavigation">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#home" data-i18n="navHome">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#about" data-i18n="navShop">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact" data-i18n="navContact">Contact</a></li>
                         <li class="nav-item ms-lg-3 d-none d-lg-block">
                             <button class="btn btn-outline-dark cart-toggle" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#shoppingCart" aria-controls="shoppingCart">
                                 <i class="fa-solid fa-bag-shopping me-2" aria-hidden="true"></i>
-                                Cart <span id="cartCount" class="badge rounded-pill text-bg-dark"
+                                <span data-i18n="cartLabel">Cart</span> <span id="cartCount" class="badge rounded-pill text-bg-dark"
                                     aria-live="polite">0</span>
                             </button>
+                        </li>
+                        <li class="nav-item preference-controls">
+                            <button id="languageToggle" class="btn btn-sm btn-outline-dark" type="button">မြန်မာ</button>
+                            <button id="themeToggle" class="btn btn-sm btn-outline-dark" type="button">Black</button>
                         </li>
                     </ul>
                 </div>
@@ -56,12 +62,15 @@
             <div class="container">
                 <div class="row align-items-center g-4">
                     <div class="col-12 col-lg-6 text-center text-lg-start">
-                        <h1>Find your next favorite pair</h1>
-                        <p>Sneakers and clogs from Air Jordan, New Balance, Crocs and PUMA.</p>
-                        <a class="btn btn-dark btn-lg mt-3" href="#about">Shop the collection</a>
+                        <h1 data-i18n="heroTitle">Find your next favorite pair</h1>
+                        <p data-i18n="heroDescription">Sneakers and clogs from Air Jordan, New Balance, Crocs and PUMA.</p>
+                        <a class="btn btn-dark btn-lg mt-3 icon-button" href="#about">
+                            <span data-i18n="shopCollection">Shop the collection</span>
+                        </a>
                     </div>
                     <div class="col-12 col-lg-6">
-                        <img src="./img/main.webp" alt="Featured shoes" class="main-image" fetchpriority="high" />
+                        <img id="heroLogo" src="./img/logo_white.jpg" alt="KODEX - Design, Develop, Deliver"
+                            class="main-image" width="768" height="768" fetchpriority="high" />
                     </div>
                 </div>
             </div>
@@ -69,8 +78,8 @@
 
         <section id="about" class="about">
             <div class="container-fluid">
-                <h2>Shop the collection</h2>
-                <p>Explore styles and colors from the brands you love.</p>
+                <h2 data-i18n="shopCollection">Shop the collection</h2>
+                <p data-i18n="shopDescription">Explore styles and colors from the brands you love.</p>
 
                 <div class="image-main container-fluid px-3 px-lg-5">
 
@@ -428,7 +437,7 @@
                     </div>
 
                     <div class="shoe-group row g-4">
-                        <h3 class="col-12">Crocs Clogs</h3>
+                        <h3 class="col-12" data-i18n="crocsHeading">Crocs Clogs</h3>
                         <div class="image-gallery col-12 col-sm-6 col-lg-4 col-xl-3">
                             <div class="image-container" data-color="Bright Cobalt">
                                 <div class="image-wrapper"><img src="./img/Baya Clog Bright Cobalt.jpg"
@@ -713,22 +722,93 @@
         </section>
     </main>
 
+    <section id="contact" class="contact-section" aria-labelledby="contactTitle">
+        <div class="container">
+            <div class="row g-4 g-lg-5 align-items-stretch">
+                <div class="col-12 col-lg-5">
+                    <div class="contact-intro">
+                        <p class="contact-eyebrow" data-i18n="contactEyebrow">Get in touch</p>
+                        <h2 id="contactTitle" data-i18n="contactTitle">We’d love to hear from you</h2>
+                        <p data-i18n="contactDescription">Questions about a pair, sizing, or an order? Send us a message and our team will help.</p>
 
-    <footer id="contact" class="site-footer">
+                        <div class="contact-details">
+                            <a href="mailto:hello@kodex.store" class="contact-detail">
+                                <span class="contact-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+                                <span>
+                                    <small data-i18n="emailLabel">Email</small>
+                                    <strong>hello@kodex.store</strong>
+                                </span>
+                            </a>
+                            <a href="tel:+959123456789" class="contact-detail">
+                                <span class="contact-icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+                                <span>
+                                    <small data-i18n="phoneLabel">Phone</small>
+                                    <strong>+95 9 123 456 789</strong>
+                                </span>
+                            </a>
+                            <div class="contact-detail">
+                                <span class="contact-icon" aria-hidden="true"><i class="fa-solid fa-clock"></i></span>
+                                <span>
+                                    <small data-i18n="hoursLabel">Opening hours</small>
+                                    <strong data-i18n="hoursValue">Mon–Sat, 9:00 AM–6:00 PM</strong>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-7">
+                    <form id="contactForm" class="contact-form" action="mailto:hello@kodex.store" method="post" enctype="text/plain">
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6">
+                                <label for="contactName" class="form-label" data-i18n="contactNameLabel">Name</label>
+                                <input id="contactName" name="name" class="form-control" type="text"
+                                    autocomplete="name" placeholder="Your name" data-i18n-placeholder="contactNamePlaceholder" required />
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label for="contactEmail" class="form-label" data-i18n="contactEmailLabel">Email</label>
+                                <input id="contactEmail" name="email" class="form-control" type="email"
+                                    autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="contactEmailPlaceholder" required />
+                            </div>
+                            <div class="col-12">
+                                <label for="contactSubject" class="form-label" data-i18n="contactSubjectLabel">Subject</label>
+                                <input id="contactSubject" name="subject" class="form-control" type="text"
+                                    placeholder="How can we help?" data-i18n-placeholder="contactSubjectPlaceholder" required />
+                            </div>
+                            <div class="col-12">
+                                <label for="contactMessage" class="form-label" data-i18n="contactMessageLabel">Message</label>
+                                <textarea id="contactMessage" name="message" class="form-control" rows="5"
+                                    placeholder="Tell us more..." data-i18n-placeholder="contactMessagePlaceholder" required></textarea>
+                            </div>
+                            <div class="col-12 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                                <p id="contactStatus" class="contact-status mb-0" role="status" aria-live="polite"></p>
+                                <button class="btn btn-dark contact-submit" type="submit">
+                                    <span data-i18n="contactSend">Send message</span>
+                                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
         <div class="container py-4">
             <div class="row align-items-center gy-3">
                 <div class="col-12 col-md">
                     <a class="footer-brand" href="#home">KODEX</a>
-                    <p class="mb-0 mt-2">A curated selection of sneakers and everyday favorites.</p>
+                    <p class="mb-0 mt-2" data-i18n="footerDescription">A curated selection of sneakers and everyday favorites.</p>
                 </div>
                 <div class="col-12 col-md-auto">
-                    <a href="#home">Home</a>
-                    <a href="#about">Shop</a>
+                    <a href="#home" data-i18n="navHome">Home</a>
+                    <a href="#about" data-i18n="navShop">Shop</a>
                     <button class="footer-cart-link" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#shoppingCart" aria-controls="shoppingCart">Shopping cart</button>
+                        data-bs-target="#shoppingCart" aria-controls="shoppingCart" data-i18n="shoppingCart">Shopping cart</button>
                 </div>
                 <div class="col-12 text-md-end">
-                    <small>&copy; <span id="currentYear"></span> KODEX. All rights reserved.</small>
+                    <small>&copy; <span id="currentYear"></span> KODEX. <span data-i18n="rightsReserved">All rights reserved.</span></small>
                 </div>
             </div>
         </div>
@@ -738,8 +818,9 @@
         <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-sm-down">
             <div class="modal-content order-form-modal">
                 <div class="modal-header">
-                    <h2 class="modal-title h5" id="orderFormTitle">Complete your order</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close order form"></button>
+                    <h2 class="modal-title h5" id="orderFormTitle" data-i18n="completeOrder">Complete your order</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close order form"
+                        data-i18n-aria-label="closeOrderForm"></button>
                 </div>
                 <div class="modal-body p-0">
                     <iframe id="orderFormFrame" src="about:blank" data-src="./test/form.html"
@@ -753,8 +834,9 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content product-info-modal">
                 <div class="modal-header">
-                    <h2 class="modal-title h4" id="productInfoTitle">Product details</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close product details"></button>
+                    <h2 class="modal-title h4" id="productInfoTitle" data-i18n="productDetails">Product details</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close product details"
+                        data-i18n-aria-label="closeProductDetails"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row align-items-center g-4">
@@ -764,10 +846,22 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
-                            <p class="text-secondary mb-1">Selected style</p>
-                            <h3 id="productInfoName" class="h3"></h3>
-                            <p class="mb-4"><strong>Color:</strong> <span id="productInfoColor"></span></p>
-                            <button id="productInfoCartButton" class="btn btn-dark" type="button">Add to cart</button>
+                            <p class="text-secondary mb-1" data-i18n="selectedStyle">Selected style</p>
+                            <div class="product-info-title-row">
+                                <h3 id="productInfoName" class="h3 mb-0"></h3>
+                                <span id="productInfoPrice" class="product-info-price" aria-label="Price"></span>
+                            </div>
+                            <p class="mb-4"><strong data-i18n="colorLabel">Color:</strong> <span id="productInfoColor"></span></p>
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <button id="productInfoCartButton" class="btn btn-dark icon-button" type="button">
+                                    <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                                    <span data-i18n="addToCart">Add to cart</span>
+                                </button>
+                                    <button id="productInfoOrderButton" class="btn btn-outline-dark icon-button" type="button">
+                                        <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+                                        <span data-i18n="order">Order</span>
+                                    </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -776,19 +870,46 @@
     </div>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="shoppingCart" aria-labelledby="shoppingCartTitle">
-        <div class="offcanvas-header">
-            <h2 class="offcanvas-title h4" id="shoppingCartTitle">Your cart</h2>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close cart"></button>
+        <div class="offcanvas-header justify-content-between">
+            <h2 class="offcanvas-title h4" id="shoppingCartTitle" data-i18n="yourCart">Your cart</h2>
+            <div class="offcanvas-header-actions">
+                <button id="openOrderHistory" class="history-header-button" type="button"
+                    aria-label="Open order history" data-i18n-aria-label="orderHistory">
+                    <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close cart"
+                    data-i18n-aria-label="closeCart"></button>
+            </div>
         </div>
         <div class="offcanvas-body d-flex flex-column">
-            <p id="cartEmpty" class="text-secondary">Your cart is empty.</p>
+            <p id="cartEmpty" class="text-secondary" data-i18n="cartEmpty">Your cart is empty.</p>
             <ul id="cartItems" class="list-group list-group-flush" aria-live="polite"></ul>
-            <button id="checkoutCart" class="btn btn-dark mt-3" type="button" disabled>Order</button>
-            <button id="clearCart" class="btn btn-outline-secondary mt-auto" type="button" disabled>
-                Clear cart
+            <button id="checkoutCart" class="btn btn-dark mt-3 icon-button" type="button" disabled>
+                <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+                <span data-i18n="order">Order</span>
             </button>
+            <button id="clearCart" class="btn btn-outline-secondary mt-auto icon-button" type="button" disabled>
+                <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                <span data-i18n="clearCart">Clear cart</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="orderHistoryPanel" aria-labelledby="orderHistoryTitle">
+        <div class="offcanvas-header">
+            <h2 class="offcanvas-title h4" id="orderHistoryTitle" data-i18n="orderHistory">Order history</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close order history"
+                data-i18n-aria-label="closeOrderHistory"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <p id="orderHistoryEmpty" class="text-secondary" data-i18n="orderHistoryEmpty">No previous orders yet.</p>
+            <div id="orderHistoryList" class="order-history-list" aria-live="polite"></div>
+            <button id="clearOrderHistory" class="btn btn-outline-secondary mt-auto icon-button" type="button" disabled>
+                <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+                <span data-i18n="clearOrderHistory">Clear history</span>
         </div>
     </div>
 </body>
 
 </html>
+

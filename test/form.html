@@ -38,6 +38,18 @@
       margin-bottom: 16px;
     }
 
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .form-row > div {
+      min-width: 0;
+      margin-bottom: 0;
+    }
+
     label {
       display: inline-block;
       margin-bottom: 6px;
@@ -60,6 +72,7 @@
     input {
       height: 42px;
       padding: 0 12px;
+      border-top: none;
     }
 
     textarea {
@@ -120,6 +133,36 @@
       font-size: 14px;
     }
 
+    html[data-theme="dark"] body {
+      background: #151719;
+      color: #f0f0f0;
+    }
+
+    html[data-theme="dark"] #contactForm {
+      border-color: #3b4146;
+      background: #202326;
+    }
+
+    html[data-theme="dark"] input,
+    html[data-theme="dark"] textarea {
+      border-color: #51575d;
+      background: #181a1b;
+      color: #f0f0f0;
+    }
+
+    html[data-theme="dark"] #kpayPreview {
+      border-color: #51575d;
+    }
+
+    html[data-theme="dark"] #submitBtn {
+      background: #f0f0f0;
+      color: #17191b;
+    }
+
+    html[data-theme="dark"] #submitBtn:hover {
+      background: #d7dadd;
+    }
+
     @media (max-width: 520px) {
       body {
         align-items: start;
@@ -129,46 +172,145 @@
       #contactForm {
         padding: 20px 16px;
       }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
   <form id="contactForm">
-    <div>
-      <label for="name">Name:</label><br>
-      <input type="text" id="name" name="name" required>
+    <div class="form-row">
+      <div>
+        <label for="senderName" data-i18n="senderName">Sender (who is sending):</label><br>
+        <input type="text" id="senderName" name="senderName" autocomplete="name" required>
+      </div>
+      <div>
+        <label for="senderPhone" data-i18n="senderPhone">Sender phone number:</label><br>
+        <input type="tel" id="senderPhone" name="senderPhone" autocomplete="tel" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label for="recipientName" data-i18n="recipientName">Recipient (sent for):</label><br>
+        <input type="text" id="recipientName" name="recipientName" required>
+      </div>
+      <div>
+        <label for="recipientPhone" data-i18n="recipientPhone">Recipient phone number:</label><br>
+        <input type="tel" id="recipientPhone" name="recipientPhone" required>
+      </div>
     </div>
     <br>
     <div>
-      <label for="phone">Phone No.:</label><br>
-      <input type="tel" id="phone" name="phone" required>
-    </div>
-    <br>
-    <div>
-      <label for="address">Address:</label><br>
+      <label for="address" data-i18n="address">Address:</label><br>
       <textarea id="address" name="address" rows="3" required></textarea>
     </div>
     <br>
     <div>
-      <label for="message">Order details / notes:</label><br>
+      <label for="message" data-i18n="orderDetails">Order details / notes:</label><br>
       <textarea id="message" name="message" rows="4" required></textarea>
-      <small>Cart items are filled in automatically. Add a note if needed.</small>
+      <small data-i18n="cartNote">Cart items are filled in automatically. Add a note if needed.</small>
     </div>
     <br>
     <div>
-      <label for="kpayReceipt">KPay receipt image (choose from photos):</label><br>
+      <label for="kpayReceipt" data-i18n="receipt">KPay receipt image (choose from photos):</label><br>
       <input type="file" id="kpayReceipt" name="kpayReceipt" accept="image/*" required>
       <br>
-      <img id="kpayPreview" alt="KPay ငွေလွှဲပြေစာအကြိုမြင်ကွင်း">
+      <img id="kpayPreview" alt="KPay receipt preview" data-i18n-alt="receiptPreview">
     </div>
     <br>
-    <button type="submit" id="submitBtn">Order</button>
+    <button type="submit" id="submitBtn" data-i18n="order">Order</button>
   </form>
 
   <p id="status"></p>
 
   <script>
+    const formTranslations = {
+      en: {
+        senderName: "Sender (who is sending):",
+        recipientName: "Recipient (sent for):",
+        senderPhone: "Sender phone number:",
+        recipientPhone: "Recipient phone number:",
+        address: "Address:",
+        orderDetails: "Order details / notes:",
+        cartNote: "Cart items are filled in automatically. Add a note if needed.",
+        receipt: "KPay receipt image (choose from photos):",
+        receiptPreview: "KPay receipt preview",
+        order: "Order",
+        noCart: "No cart items were found. Return to the shop and add an item first.",
+        cartError: "Could not read the saved cart. Return to the shop and try again.",
+        cartTitle: "KODEX order:",
+        quantity: "Qty:",
+        sending: "Sending to admin...",
+        photoCaption: "KPay payment receipt",
+        success: "✅ The admin team will contact you after reviewing your order.",
+        failed: "Failed: ",
+        unknownError: "Unknown error",
+        error: "Error: ",
+        networkError: "A network error occurred.",
+        photoError: "Could not send the image.",
+      },
+      my: {
+        senderName: "ပို့သူ (ဘယ်သူကပို့သည်):",
+        recipientName: "လက်ခံသူ (ဘယ်သူ့အတွက်ပို့သည်):",
+        senderPhone: "ပို့သူဖုန်းနံပါတ်:",
+        recipientPhone: "လက်ခံသူဖုန်းနံပါတ်:",
+        address: "လိပ်စာ:",
+        orderDetails: "အော်ဒါအသေးစိတ် / မှတ်ချက်:",
+        cartNote: "ဈေးခြင်းထဲရှိ ပစ္စည်းများကို အလိုအလျောက် ဖြည့်ထားပါသည်။ လိုအပ်ပါက မှတ်ချက်ထည့်ပါ။",
+        receipt: "KPay ငွေလွှဲပြေစာပုံ (ဓာတ်ပုံများမှ ရွေးပါ):",
+        receiptPreview: "KPay ငွေလွှဲပြေစာ အကြိုမြင်ကွင်း",
+        order: "အော်ဒါတင်မည်",
+        noCart: "ဈေးခြင်းထဲတွင် ပစ္စည်းမတွေ့ပါ။ ဆိုင်သို့ပြန်ပြီး ပစ္စည်းထည့်ပါ။",
+        cartError: "သိမ်းထားသော ဈေးခြင်းကို ဖတ်မရပါ။ ဆိုင်သို့ပြန်ပြီး ထပ်ကြိုးစားပါ။",
+        cartTitle: "KODEX အော်ဒါ:",
+        quantity: "အရေအတွက်:",
+        sending: "အက်ဒမင်ထံ ပို့နေသည်...",
+        photoCaption: "KPay ငွေလွှဲပြေစာ",
+        success: "✅ အက်ဒမင်မှ အော်ဒါကို စစ်ဆေးပြီးနောက် ဆက်သွယ်ပေးပါမည်။",
+        failed: "မအောင်မြင်ပါ: ",
+        unknownError: "မသိရှိသော အမှား",
+        error: "အမှား: ",
+        networkError: "ကွန်ရက်အမှား ဖြစ်ပွားခဲ့သည်။",
+        photoError: "ပုံပို့၍ မရပါ။",
+      },
+    };
+
+    function readFormPreference(key, validValues, fallback) {
+      try {
+        const value = localStorage.getItem(key);
+        return validValues.includes(value) ? value : fallback;
+      } catch (error) {
+        console.warn(`Could not read preference "${key}".`, error);
+        return fallback;
+      }
+    }
+
+    let currentLanguage = readFormPreference("site-language", ["en", "my"], "en");
+
+    function applyFormPreferences() {
+      currentLanguage = readFormPreference("site-language", ["en", "my"], "en");
+      const theme = readFormPreference("site-theme", ["light", "dark"], "light");
+      document.documentElement.lang = currentLanguage;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
+
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        element.textContent = formTranslations[currentLanguage][element.dataset.i18n];
+      });
+      document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
+        element.alt = formTranslations[currentLanguage][element.dataset.i18nAlt];
+      });
+    }
+
+    function formText(key) {
+      return formTranslations[currentLanguage][key];
+    }
+
+    applyFormPreferences();
+
     const BOT_TOKEN = "9181923719:AAEAgO368kua9Iy4kzYHtErzXSjcdMz9lEY"; // @BotFather မှ ရသော Token
     const CHAT_ID = "8939327163"; // ဥပမာ - "-1001234567890"
 
@@ -179,28 +321,50 @@
     const kpayPreview = document.getElementById("kpayPreview");
     const messageInput = document.getElementById("message");
 
-    try {
-      const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
-      const items = Array.isArray(savedCart)
-        ? savedCart.filter((entry) => Array.isArray(entry)
-          && entry[1]
-          && typeof entry[1].name === "string"
-          && typeof entry[1].color === "string"
-          && Number.isInteger(entry[1].quantity)
-          && entry[1].quantity > 0)
-        : [];
+    let autoFilledCartDetails = false;
 
-      if (items.length > 0) {
-        messageInput.value = [
-          "KODEX order:",
-          ...items.map(([, item]) => `- ${item.name} | ${item.color} | Qty: ${item.quantity}`)
-        ].join("\n");
-      } else {
-        statusEl.textContent = "No cart items were found. Return to the shop and add an item first.";
+    function fillCartDetails() {
+      try {
+        const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
+        const items = Array.isArray(savedCart)
+          ? savedCart.filter((entry) => Array.isArray(entry)
+            && entry[1]
+            && typeof entry[1].name === "string"
+            && typeof entry[1].color === "string"
+            && Number.isInteger(entry[1].quantity)
+            && entry[1].quantity > 0)
+          : [];
+
+        if (items.length > 0) {
+          messageInput.value = [
+            formText("cartTitle"),
+            ...items.map(([, item]) => `- ${item.name} | ${item.color} | ${formText("quantity")} ${item.quantity}`)
+          ].join("\n");
+          autoFilledCartDetails = true;
+        } else {
+          autoFilledCartDetails = false;
+          statusEl.textContent = formText("noCart");
+        }
+      } catch (error) {
+        autoFilledCartDetails = false;
+        console.warn("Could not read the saved cart.", error);
+        statusEl.textContent = formText("cartError");
       }
-    } catch {
-      statusEl.textContent = "Could not read the saved cart. Return to the shop and try again.";
     }
+
+    messageInput.addEventListener("input", () => {
+      autoFilledCartDetails = false;
+    });
+    fillCartDetails();
+
+    window.addEventListener("storage", (event) => {
+      if (event.key === "site-language" || event.key === "site-theme") {
+        applyFormPreferences();
+        if (event.key === "site-language" && autoFilledCartDetails) {
+          fillCartDetails();
+        }
+      }
+    });
 
     kpayReceiptInput.addEventListener("change", function () {
       const file = kpayReceiptInput.files[0];
@@ -229,19 +393,23 @@
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
+      const senderName = document.getElementById("senderName").value.trim();
+      const recipientName = document.getElementById("recipientName").value.trim();
+      const senderPhone = document.getElementById("senderPhone").value.trim();
+      const recipientPhone = document.getElementById("recipientPhone").value.trim();
       const address = document.getElementById("address").value.trim();
       const message = document.getElementById("message").value.trim();
       const kpayReceipt = document.getElementById("kpayReceipt").files[0];
       const text =
-        " Name: " + name + "\n" +
-        " Phone: " + phone + "\n" +
-        " Address: " + address + "\n" +
-        " Message: " + message;
+        " Sender: " + senderName + "\n" +
+        " Sender phone: " + senderPhone + "\n" +
+        " Recipient: " + recipientName + "\n" +
+        " Recipient phone: " + recipientPhone + "\n" +
+        " Message: " + message + "\n" 
+        " Address: " + address;
 
       submitBtn.disabled = true;
-      statusEl.textContent = "Sending to Admin...";
+      statusEl.textContent = formText("sending");
 
       try {
         const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -259,7 +427,7 @@
 
         if (response.ok && data.ok) {
           const photoUploads = [
-            { file: kpayReceipt, caption: " KPay ငွေလွှဲပြေစာ" }
+            { file: kpayReceipt, caption: formText("photoCaption") }
           ];
 
           for (const photo of photoUploads) {
@@ -275,17 +443,50 @@
 
             const photoResult = await photoResponse.json();
             if (!photoResponse.ok || !photoResult.ok) {
-              throw new Error(photoResult.description || "ပုံပို့၍မရပါ");
+              throw new Error(photoResult.description || formText("photoError"));
             }
           }
 
-          statusEl.textContent = "✅ Admin တွေဘက်မှ Order ကိုစစ်ဆေးပြီးတာနဲ့ဆက်သွယ်လိုက်ပါမယ်";
+          statusEl.textContent = formText("success");
+
+          let orderItems = [];
+          try {
+            const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
+            orderItems = Array.isArray(savedCart)
+              ? savedCart
+                  .filter((entry) => Array.isArray(entry) && entry[1])
+                  .map(([key, item]) => ({
+                    key,
+                    name: item.name,
+                    color: item.color,
+                    quantity: item.quantity
+                  }))
+              : [];
+          } catch (error) {
+            console.warn("Could not read cart for order history.", error);
+          }
+
+          window.parent.postMessage({
+            type: "KODEX_ORDER_SUCCESS",
+            order: {
+              id: `KDX-${Date.now().toString().slice(-8)}`,
+              createdAt: new Date().toISOString(),
+              senderName,
+              senderPhone,
+              recipientName,
+              recipientPhone,
+              address,
+              message,
+              items: orderItems
+            }
+          }, "*");
+
           form.reset();
         } else {
-          statusEl.textContent = "မအောင်မြင်ပါ: " + (data.description || "Unknown error");
+          statusEl.textContent = formText("failed") + (data.description || formText("unknownError"));
         }
       } catch (error) {
-        statusEl.textContent = "အမှား: " + (error.message || "Network error ဖြစ်နေပါသည်။");
+        statusEl.textContent = formText("error") + (error.message || formText("networkError"));
       } finally {
         submitBtn.disabled = false;
       }
