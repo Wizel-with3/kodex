@@ -446,9 +446,9 @@ function renderCart() {
 
         const label = `${item.name} (${item.color})`;
         const removeButton = document.createElement("button");
-        removeButton.className = "btn btn-sm btn-link text-secondary icon-button";
+        removeButton.className = "btn btn-sm btn-link text-secondary cart-item-remove";
         removeButton.type = "button";
-        removeButton.innerHTML = `<i class="fa-solid fa-trash-can" aria-hidden="true"></i><span>${t("remove")}</span>`;
+        removeButton.innerHTML = '<i class="fa-solid fa-trash-can" aria-hidden="true"></i>';
         removeButton.setAttribute(
             "aria-label",
             currentLanguage === "my"
@@ -491,7 +491,7 @@ document.querySelectorAll(".buy-button").forEach((button) => {
         infoImage.src = image.src;
         infoImage.alt = `${productName} in ${color}`;
         document.querySelector("#productInfoPrice").textContent =
-            card.dataset.price ? card.dataset.price : "\u2014";
+            card.dataset.price ? card.dataset.price : "$299";
 
         document.querySelector("#productInfoCartButton").dataset.name = productName;
         document.querySelector("#productInfoCartButton").dataset.color = color;

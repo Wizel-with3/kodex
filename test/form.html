@@ -103,6 +103,21 @@
       object-fit: contain;
     }
 
+    #kpayCheck {
+      display: none;
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #kpayCheck.valid {
+      color: #16803a;
+    }
+
+    #kpayCheck.invalid {
+      color: #b42318;
+    }
+
     #submitBtn {
       width: 100%;
       height: 44px;
@@ -184,7 +199,7 @@
   <form id="contactForm">
     <div class="form-row">
       <div>
-        <label for="senderName" data-i18n="senderName">Sender (who is sending):</label><br>
+        <label for="senderName" data-i18n="senderName">Sender:</label><br>
         <input type="text" id="senderName" name="senderName" autocomplete="name" required>
       </div>
       <div>
@@ -194,7 +209,7 @@
     </div>
     <div class="form-row">
       <div>
-        <label for="recipientName" data-i18n="recipientName">Recipient (sent for):</label><br>
+        <label for="recipientName" data-i18n="recipientName">Recipient:</label><br>
         <input type="text" id="recipientName" name="recipientName" required>
       </div>
       <div>
@@ -219,6 +234,7 @@
       <input type="file" id="kpayReceipt" name="kpayReceipt" accept="image/*" required>
       <br>
       <img id="kpayPreview" alt="KPay receipt preview" data-i18n-alt="receiptPreview">
+      <p id="kpayCheck" role="status" aria-live="polite"></p>
     </div>
     <br>
     <button type="submit" id="submitBtn" data-i18n="order">Order</button>
@@ -229,9 +245,9 @@
   <script>
     const formTranslations = {
       en: {
-        senderName: "Sender (who is sending):",
-        recipientName: "Recipient (sent for):",
+        senderName: "Sender:",
         senderPhone: "Sender phone number:",
+        recipientName: "Recipient:",
         recipientPhone: "Recipient phone number:",
         address: "Address:",
         orderDetails: "Order details / notes:",
@@ -251,11 +267,17 @@
         error: "Error: ",
         networkError: "A network error occurred.",
         photoError: "Could not send the image.",
+        slipChecking: "Checking slip...",
+        slipValid: "Basic checks passed. Admin must verify authenticity.",
+        slipInvalidType: "Please upload a JPG or PNG image.",
+        slipInvalidSize: "The image is too small or too large.",
+        slipDuplicate: "This KPay slip has already been submitted.",
+        slipUnreadable: "Could not read this image.",
       },
       my: {
-        senderName: "ပို့သူ (ဘယ်သူကပို့သည်):",
-        recipientName: "လက်ခံသူ (ဘယ်သူ့အတွက်ပို့သည်):",
+        senderName: "ပို့သူ:",
         senderPhone: "ပို့သူဖုန်းနံပါတ်:",
+        recipientName: "လက်ခံသူ:",
         recipientPhone: "လက်ခံသူဖုန်းနံပါတ်:",
         address: "လိပ်စာ:",
         orderDetails: "အော်ဒါအသေးစိတ် / မှတ်ချက်:",
@@ -275,6 +297,12 @@
         error: "အမှား: ",
         networkError: "ကွန်ရက်အမှား ဖြစ်ပွားခဲ့သည်။",
         photoError: "ပုံပို့၍ မရပါ။",
+        slipChecking: "ငွေလွှဲပြေစာ စစ်ဆေးနေသည်...",
+        slipValid: "အခြေခံစစ်ဆေးချက် အောင်မြင်သည်။ အမှန်တကယ်ဖြစ်ကြောင်း အက်ဒမင် အတည်ပြုရမည်။",
+        slipInvalidType: "JPG သို့မဟုတ် PNG ပုံကိုသာ တင်ပါ။",
+        slipInvalidSize: "ပုံအရွယ်အစား သေးလွန်းသည် သို့မဟုတ် ကြီးလွန်းသည်။",
+        slipDuplicate: "ဤ KPay ငွေလွှဲပြေစာကို အရင်တင်ထားပြီးဖြစ်သည်။",
+        slipUnreadable: "ဤပုံကို ဖတ်မရပါ။",
       },
     };
 
@@ -319,9 +347,11 @@
     const submitBtn = document.getElementById("submitBtn");
     const kpayReceiptInput = document.getElementById("kpayReceipt");
     const kpayPreview = document.getElementById("kpayPreview");
+    const kpayCheck = document.getElementById("kpayCheck");
     const messageInput = document.getElementById("message");
 
     let autoFilledCartDetails = false;
+    let validatedKpayHash = "";
 
     function fillCartDetails() {
       try {
@@ -366,17 +396,84 @@
       }
     });
 
-    kpayReceiptInput.addEventListener("change", function () {
+    async function getFileHash(file) {
+      const buffer = await file.arrayBuffer();
+      const digest = await crypto.subtle.digest("SHA-256", buffer);
+      return [...new Uint8Array(digest)]
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    kpayReceiptInput.addEventListener("change", async function () {
       const file = kpayReceiptInput.files[0];
+      validatedKpayHash = "";
 
       if (!file) {
         kpayPreview.src = "";
         kpayPreview.style.display = "none";
+        kpayCheck.style.display = "none";
         return;
       }
 
-      kpayPreview.src = URL.createObjectURL(file);
-      kpayPreview.style.display = "block";
+      kpayCheck.className = "";
+      kpayCheck.classList.remove("invalid", "valid");
+      kpayCheck.textContent = formText("slipChecking");
+      kpayCheck.style.display = "block";
+
+      if (!["image/jpeg", "image/png"].includes(file.type)) {
+        kpayCheck.classList.add("invalid");
+        kpayCheck.textContent = formText("slipInvalidType");
+        kpayReceiptInput.setCustomValidity(formText("slipInvalidType"));
+        return;
+      }
+
+      if (file.size < 50000 || file.size > 10000000) {
+        kpayCheck.classList.add("invalid");
+        kpayCheck.textContent = formText("slipInvalidSize");
+        kpayReceiptInput.setCustomValidity(formText("slipInvalidSize"));
+        return;
+      }
+
+      try {
+        const previewUrl = URL.createObjectURL(file);
+        kpayPreview.src = previewUrl;
+        kpayPreview.style.display = "block";
+
+        await new Promise((resolve, reject) => {
+          kpayPreview.onload = resolve;
+          kpayPreview.onerror = reject;
+        });
+
+        if (kpayPreview.naturalWidth < 500 || kpayPreview.naturalHeight < 500) {
+          kpayCheck.classList.add("invalid");
+          kpayCheck.textContent = formText("slipInvalidSize");
+          kpayReceiptInput.setCustomValidity(formText("slipInvalidSize"));
+          return;
+        }
+
+        validatedKpayHash = await getFileHash(file);
+        let submittedHashes = [];
+        try {
+          submittedHashes = JSON.parse(localStorage.getItem("kpay-submitted-hashes") || "[]");
+        } catch {
+          submittedHashes = [];
+        }
+
+        if (submittedHashes.includes(validatedKpayHash)) {
+          kpayCheck.classList.add("invalid");
+          kpayCheck.textContent = formText("slipDuplicate");
+          kpayReceiptInput.setCustomValidity(formText("slipDuplicate"));
+          return;
+        }
+
+        kpayReceiptInput.setCustomValidity("");
+        kpayCheck.classList.add("valid");
+        kpayCheck.textContent = formText("slipValid");
+      } catch {
+        kpayCheck.classList.add("invalid");
+        kpayCheck.textContent = formText("slipUnreadable");
+        kpayReceiptInput.setCustomValidity(formText("slipUnreadable"));
+      }
     });
 
     kpayPreview.addEventListener("load", function () {
@@ -388,6 +485,10 @@
     form.addEventListener("reset", function () {
       kpayPreview.src = "";
       kpayPreview.style.display = "none";
+      kpayCheck.style.display = "none";
+      kpayCheck.className = "";
+      kpayReceiptInput.setCustomValidity("");
+      validatedKpayHash = "";
     });
 
     form.addEventListener("submit", async function (e) {
@@ -405,8 +506,9 @@
         " Sender phone: " + senderPhone + "\n" +
         " Recipient: " + recipientName + "\n" +
         " Recipient phone: " + recipientPhone + "\n" +
-        " Message: " + message + "\n" 
-        " Address: " + address;
+        " Address: " + address + "\n" +
+        " Message: " + message + "\n" +
+        " KPay slip verification: Basic checks passed; manual admin verification required.";
 
       submitBtn.disabled = true;
       statusEl.textContent = formText("sending");
@@ -444,6 +546,19 @@
             const photoResult = await photoResponse.json();
             if (!photoResponse.ok || !photoResult.ok) {
               throw new Error(photoResult.description || formText("photoError"));
+            }
+          }
+
+          if (validatedKpayHash) {
+            let submittedHashes = [];
+            try {
+              submittedHashes = JSON.parse(localStorage.getItem("kpay-submitted-hashes") || "[]");
+            } catch {
+              submittedHashes = [];
+            }
+            if (!submittedHashes.includes(validatedKpayHash)) {
+              submittedHashes.unshift(validatedKpayHash);
+              localStorage.setItem("kpay-submitted-hashes", JSON.stringify(submittedHashes.slice(0, 200)));
             }
           }
 
