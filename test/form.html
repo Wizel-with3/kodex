@@ -17,8 +17,10 @@
     body {
       min-height: 100vh;
       margin: 0;
-      display: grid;
-      place-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
       padding: 24px 16px;
       background: #f5f7fa;
       color: #202124;
@@ -26,7 +28,7 @@
 
     #contactForm {
       width: 100%;
-      max-width: 480px;
+      max-width: 640px;
       padding: 24px;
       border: 1px solid #e3e6ea;
       border-radius: 12px;
@@ -34,8 +36,25 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
     }
 
-    #contactForm div {
-      margin-bottom: 16px;
+    .form-section {
+      min-width: 0;
+      margin: 0;
+      padding: 0 0 20px;
+      border: 0;
+      border-bottom: 1px solid #e3e6ea;
+    }
+
+    .form-section + .form-section {
+      margin-top: 20px;
+    }
+
+    .form-section legend {
+      float: none;
+      width: auto;
+      margin: 0 0 14px;
+      padding: 0;
+      font-size: 16px;
+      font-weight: 700;
     }
 
     .form-row {
@@ -81,6 +100,87 @@
       resize: vertical;
     }
 
+    #orderDetails {
+      min-height: 136px;
+      resize: vertical;
+      background: #f5f7fa;
+      color: #45484d;
+      cursor: default;
+    }
+
+    #note {
+      min-height: 104px;
+    }
+
+    .field-help {
+      display: block;
+      margin-top: 6px;
+      color: #686b70;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .admin-kpay-account {
+      margin: 0 0 16px;
+      padding: 14px 16px;
+      border: 2px solid steelblue;
+      border-radius: 6px;
+      background: #f5f9fc;
+    }
+
+    .admin-kpay-account h3 {
+      margin: 0 0 6px;
+      color: steelblue;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .admin-kpay-account p {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0;
+      color: #5f6368;
+      font-size: 14px;
+    }
+
+    .admin-kpay-account strong {
+      color: steelblue;
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+    }
+
+    .payment-amount {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 0 16px;
+      padding: 13px 16px;
+      border: 2px solid #16803a;
+      border-radius: 8px;
+      background: #f2fbf4;
+      color: #14532d;
+      box-shadow: 0 0 0 3px rgba(22, 128, 58, 0.12), 0 0 18px rgba(22, 128, 58, 0.2);
+    }
+
+    .payment-amount[hidden] {
+      display: none;
+    }
+
+    .payment-amount span {
+      font-weight: 700;
+    }
+
+    .payment-amount strong {
+      color: #16803a;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
     input[type="file"] {
       height: auto;
       padding: 8px;
@@ -120,7 +220,8 @@
 
     #submitBtn {
       width: 100%;
-      height: 44px;
+      min-height: 48px;
+      margin-top: 20px;
       border: 0;
       border-radius: 8px;
       background: #202124;
@@ -142,7 +243,7 @@
 
     #status {
       width: 100%;
-      max-width: 480px;
+      max-width: 640px;
       margin: 12px auto 0;
       text-align: center;
       font-size: 14px;
@@ -158,6 +259,10 @@
       background: #202326;
     }
 
+    html[data-theme="dark"] .form-section {
+      border-bottom-color: #3b4146;
+    }
+
     html[data-theme="dark"] input,
     html[data-theme="dark"] textarea {
       border-color: #51575d;
@@ -167,6 +272,43 @@
 
     html[data-theme="dark"] #kpayPreview {
       border-color: #51575d;
+    }
+
+    html[data-theme="dark"] #orderDetails {
+      background: #24282c;
+      color: #d7dce0;
+    }
+
+    html[data-theme="dark"] .field-help {
+      color: #b4b8bd;
+    }
+
+    html[data-theme="dark"] .admin-kpay-account {
+      border-color: steelblue;
+      background: #1f2933;
+    }
+
+    html[data-theme="dark"] .admin-kpay-account h3 {
+      color: #d9e8f4;
+    }
+
+    html[data-theme="dark"] .admin-kpay-account p {
+      color: #c4c7c5;
+    }
+
+    html[data-theme="dark"] .admin-kpay-account strong {
+      color: #8db4d4;
+    }
+
+    html[data-theme="dark"] .payment-amount {
+      border-color: #3ca760;
+      background: #18271d;
+      color: #d7f3df;
+      box-shadow: 0 0 0 3px rgba(60, 167, 96, 0.16), 0 0 18px rgba(60, 167, 96, 0.24);
+    }
+
+    html[data-theme="dark"] .payment-amount strong {
+      color: #79d995;
     }
 
     html[data-theme="dark"] #submitBtn {
@@ -187,7 +329,9 @@
       #contactForm {
         padding: 20px 16px;
       }
+    }
 
+    @media (max-width: 480px) {
       .form-row {
         grid-template-columns: 1fr;
       }
@@ -197,46 +341,82 @@
 <body>
 
   <form id="contactForm">
-    <div class="form-row">
-      <div>
-        <label for="senderName" data-i18n="senderName">Sender:</label><br>
-        <input type="text" id="senderName" name="senderName" autocomplete="name" required>
+    <fieldset class="form-section">
+      <legend data-i18n="senderSection">Sender details</legend>
+      <div class="form-row">
+        <div>
+          <label for="senderName" data-i18n="senderName">Sender:</label>
+          <input type="text" id="senderName" name="senderName" autocomplete="name" required>
+        </div>
+        <div>
+          <label for="senderPhone" data-i18n="senderPhone">Sender phone number:</label>
+          <input type="tel" id="senderPhone" name="senderPhone" autocomplete="tel" required>
+        </div>
       </div>
-      <div>
-        <label for="senderPhone" data-i18n="senderPhone">Sender phone number:</label><br>
-        <input type="tel" id="senderPhone" name="senderPhone" autocomplete="tel" required>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend data-i18n="recipientSection">Recipient details</legend>
+      <div class="form-row">
+        <div>
+          <label for="recipientName" data-i18n="recipientName">Recipient:</label>
+          <input type="text" id="recipientName" name="recipientName" autocomplete="shipping name" required>
+        </div>
+        <div>
+          <label for="recipientPhone" data-i18n="recipientPhone">Recipient phone number:</label>
+          <input type="tel" id="recipientPhone" name="recipientPhone" autocomplete="shipping tel" required>
+        </div>
       </div>
-    </div>
-    <div class="form-row">
-      <div>
-        <label for="recipientName" data-i18n="recipientName">Recipient:</label><br>
-        <input type="text" id="recipientName" name="recipientName" required>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend data-i18n="deliverySection">Delivery address</legend>
+      <label for="address" data-i18n="address">Address:</label>
+      <textarea id="address" name="address" rows="3" autocomplete="shipping street-address"
+        aria-describedby="addressHelp" required></textarea>
+      <small id="addressHelp" class="field-help" data-i18n="addressHelp">
+        Enter the full delivery address, including township and city.
+      </small>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend data-i18n="orderSection">Order details</legend>
+      <label for="orderDetails" data-i18n="orderDetailsLabel">Selected items (read-only)</label>
+      <textarea id="orderDetails" rows="5" readonly aria-describedby="orderDetailsHelp"></textarea>
+      <small id="orderDetailsHelp" class="field-help" data-i18n="orderDetailsHelp">
+        Items are generated from your cart selection; the total appears below.
+      </small>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend data-i18n="noteSection">Note</legend>
+      <label for="note" data-i18n="noteLabel">Note (optional)</label>
+      <textarea id="note" name="message" rows="4" maxlength="1000"
+        placeholder="Add delivery instructions or other notes..." data-i18n-placeholder="notePlaceholder"></textarea>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend data-i18n="paymentSection">Payment</legend>
+      <div id="paymentAmountBox" class="payment-amount" role="status" aria-live="polite" hidden>
+        <span data-i18n="paymentTotal">Payment amount:</span>
+        <strong id="paymentAmount"></strong>
       </div>
-      <div>
-        <label for="recipientPhone" data-i18n="recipientPhone">Recipient phone number:</label><br>
-        <input type="tel" id="recipientPhone" name="recipientPhone" required>
+      <div class="admin-kpay-account" role="group" aria-labelledby="adminKpayAccountTitle">
+        <h3 id="adminKpayAccountTitle" data-i18n="adminKpayAccount">Admin KPay Account</h3>
+        <p>
+          <span data-i18n="adminKpayNumber">KPay Number:</span>
+          <strong>091234567</strong>
+        </p>
       </div>
-    </div>
-    <br>
-    <div>
-      <label for="address" data-i18n="address">Address:</label><br>
-      <textarea id="address" name="address" rows="3" required></textarea>
-    </div>
-    <br>
-    <div>
-      <label for="message" data-i18n="orderDetails">Order details / notes:</label><br>
-      <textarea id="message" name="message" rows="4" required></textarea>
-      <small data-i18n="cartNote">Cart items are filled in automatically. Add a note if needed.</small>
-    </div>
-    <br>
-    <div>
-      <label for="kpayReceipt" data-i18n="receipt">KPay receipt image (choose from photos):</label><br>
-      <input type="file" id="kpayReceipt" name="kpayReceipt" accept="image/*" required>
-      <br>
+      <label for="kpayReceipt" data-i18n="receipt">KPay receipt image (choose from photos):</label>
+      <input type="file" id="kpayReceipt" name="kpayReceipt" accept="image/jpeg,image/png" required>
+      <small class="field-help" data-i18n="receiptHelp">
+        Upload a clear JPG or PNG image (500 px minimum, 10 MB maximum).
+      </small>
       <img id="kpayPreview" alt="KPay receipt preview" data-i18n-alt="receiptPreview">
       <p id="kpayCheck" role="status" aria-live="polite"></p>
-    </div>
-    <br>
+    </fieldset>
+
     <button type="submit" id="submitBtn" data-i18n="order">Order</button>
   </form>
 
@@ -245,17 +425,29 @@
   <script>
     const formTranslations = {
       en: {
+        senderSection: "Sender details",
+        recipientSection: "Recipient details",
+        deliverySection: "Delivery address",
+        orderSection: "Order details",
+        noteSection: "Note",
+        paymentSection: "Payment",
+        adminKpayAccount: "Admin KPay Account",
+        adminKpayNumber: "KPay Number:",
         senderName: "Sender:",
         senderPhone: "Sender phone number:",
         recipientName: "Recipient:",
         recipientPhone: "Recipient phone number:",
         address: "Address:",
-        orderDetails: "Order details / notes:",
-        cartNote: "Cart items are filled in automatically. Add a note if needed.",
+        addressHelp: "Enter the full delivery address, including township and city.",
+        orderDetailsLabel: "Selected items (read-only)",
+        orderDetailsHelp: "Items are generated from your cart selection; the total appears below.",
+        noteLabel: "Note (optional)",
+        notePlaceholder: "Add delivery instructions or other notes...",
         receipt: "KPay receipt image (choose from photos):",
+        receiptHelp: "Upload a clear JPG or PNG image (500 px minimum, 10 MB maximum).",
         receiptPreview: "KPay receipt preview",
         order: "Order",
-        noCart: "No cart items were found. Return to the shop and add an item first.",
+        noCart: "No items were found for this order. Return to the shop and try again.",
         cartError: "Could not read the saved cart. Return to the shop and try again.",
         cartTitle: "KODEX order:",
         quantity: "Qty:",
@@ -273,19 +465,33 @@
         slipInvalidSize: "The image is too small or too large.",
         slipDuplicate: "This KPay slip has already been submitted.",
         slipUnreadable: "Could not read this image.",
+        slipVerification: "KPay slip verification: Basic checks passed; admin must verify manually.",
+        paymentTotal: "Payment amount:",
       },
       my: {
+        senderSection: "ပို့သူအချက်အလက်",
+        recipientSection: "လက်ခံသူအချက်အလက်",
+        deliverySection: "ပို့ဆောင်ရမည့် လိပ်စာ",
+        orderSection: "အော်ဒါအသေးစိတ်",
+        noteSection: "မှတ်ချက်",
+        paymentSection: "ငွေပေးချေမှု",
+        adminKpayAccount: "Admin KPay Account",
+        adminKpayNumber: "KPay ဖုန်းနံပါတ်:",
         senderName: "ပို့သူ:",
         senderPhone: "ပို့သူဖုန်းနံပါတ်:",
         recipientName: "လက်ခံသူ:",
         recipientPhone: "လက်ခံသူဖုန်းနံပါတ်:",
         address: "လိပ်စာ:",
-        orderDetails: "အော်ဒါအသေးစိတ် / မှတ်ချက်:",
-        cartNote: "ဈေးခြင်းထဲရှိ ပစ္စည်းများကို အလိုအလျောက် ဖြည့်ထားပါသည်။ လိုအပ်ပါက မှတ်ချက်ထည့်ပါ။",
+        addressHelp: "ပို့ဆောင်ရန် မြို့နယ်နှင့် မြို့အပါအဝင် လိပ်စာအပြည့်အစုံကို ရိုက်ထည့်ပါ။",
+        orderDetailsLabel: "ရွေးချယ်ထားသောပစ္စည်းများ (ပြင်ဆင်၍မရပါ)",
+        orderDetailsHelp: "ဈေးခြင်းမှ ရွေးထားသောပစ္စည်းများကို အလိုအလျောက် ပြထားပြီး၊ စုစုပေါင်းတန်ဖိုးကို အောက်တွင် ဖော်ပြထားပါသည်။",
+        noteLabel: "မှတ်ချက် (မဖြစ်မနေမဟုတ်ပါ)",
+        notePlaceholder: "ပို့ဆောင်ရေးညွှန်ကြားချက် သို့မဟုတ် အခြားမှတ်ချက် ရေးပါ...",
         receipt: "KPay ငွေလွှဲပြေစာပုံ (ဓာတ်ပုံများမှ ရွေးပါ):",
+        receiptHelp: "ကြည်လင်သော JPG သို့မဟုတ် PNG ပုံကို တင်ပါ (အနည်းဆုံး 500 px၊ အများဆုံး 10 MB)။",
         receiptPreview: "KPay ငွေလွှဲပြေစာ အကြိုမြင်ကွင်း",
         order: "အော်ဒါတင်မည်",
-        noCart: "ဈေးခြင်းထဲတွင် ပစ္စည်းမတွေ့ပါ။ ဆိုင်သို့ပြန်ပြီး ပစ္စည်းထည့်ပါ။",
+        noCart: "အော်ဒါတင်ရန် ပစ္စည်းမတွေ့ပါ။ ဆိုင်သို့ပြန်ပြီး ထပ်ကြိုးစားပါ။",
         cartError: "သိမ်းထားသော ဈေးခြင်းကို ဖတ်မရပါ။ ဆိုင်သို့ပြန်ပြီး ထပ်ကြိုးစားပါ။",
         cartTitle: "KODEX အော်ဒါ:",
         quantity: "အရေအတွက်:",
@@ -303,6 +509,8 @@
         slipInvalidSize: "ပုံအရွယ်အစား သေးလွန်းသည် သို့မဟုတ် ကြီးလွန်းသည်။",
         slipDuplicate: "ဤ KPay ငွေလွှဲပြေစာကို အရင်တင်ထားပြီးဖြစ်သည်။",
         slipUnreadable: "ဤပုံကို ဖတ်မရပါ။",
+        slipVerification: "KPay ငွေလွှဲပြေစာကို အခြေခံစစ်ဆေးပြီးပါပြီ။ အက်ဒမင်မှ ကိုယ်တိုင်အတည်ပြုပါမည်။",
+        paymentTotal: "ပေးဆောင်ရမည့်ပမာဏ:",
       },
     };
 
@@ -331,6 +539,9 @@
       document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
         element.alt = formTranslations[currentLanguage][element.dataset.i18nAlt];
       });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+        element.placeholder = formTranslations[currentLanguage][element.dataset.i18nPlaceholder];
+      });
     }
 
     function formText(key) {
@@ -348,43 +559,81 @@
     const kpayReceiptInput = document.getElementById("kpayReceipt");
     const kpayPreview = document.getElementById("kpayPreview");
     const kpayCheck = document.getElementById("kpayCheck");
-    const messageInput = document.getElementById("message");
+    const orderDetailsInput = document.getElementById("orderDetails");
+    const paymentAmountBox = document.getElementById("paymentAmountBox");
+    const paymentAmount = document.getElementById("paymentAmount");
+    const noteInput = document.getElementById("note");
 
     let autoFilledCartDetails = false;
     let validatedKpayHash = "";
+    let orderPaymentTotal = 0;
+    const orderParams = new URLSearchParams(window.location.search);
+    const orderMode = orderParams.get("mode") === "product" ? "product" : "cart";
+    const selectedCartKeys = new Set(orderParams.getAll("key"));
+    const selectedOnly = orderParams.get("selectedOnly") === "1";
+    const directProduct = orderMode === "product"
+      ? {
+          name: orderParams.get("name") || "",
+          color: orderParams.get("color") || "",
+          price: orderParams.get("price") || "$299",
+          quantity: 1,
+        }
+      : null;
 
     function fillCartDetails() {
       try {
-        const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
-        const items = Array.isArray(savedCart)
-          ? savedCart.filter((entry) => Array.isArray(entry)
-            && entry[1]
-            && typeof entry[1].name === "string"
-            && typeof entry[1].color === "string"
-            && Number.isInteger(entry[1].quantity)
-            && entry[1].quantity > 0)
-          : [];
+        orderPaymentTotal = 0;
+        const items = orderMode === "product"
+          ? directProduct && directProduct.name && directProduct.color
+            ? [[`${directProduct.name}::${directProduct.color}`, directProduct]]
+            : []
+          : (() => {
+              const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
+              return Array.isArray(savedCart)
+                ? savedCart.filter((entry) => Array.isArray(entry)
+                  && entry[1]
+                  && typeof entry[1].name === "string"
+                  && typeof entry[1].color === "string"
+                  && Number.isInteger(entry[1].quantity)
+                  && entry[1].quantity > 0
+                  && (!selectedOnly || selectedCartKeys.has(entry[0])))
+                : [];
+            })();
 
         if (items.length > 0) {
-          messageInput.value = [
+          orderPaymentTotal = items.reduce((total, [, item]) => {
+            const price = Number.parseFloat(String(item.price || "$299").replace(/[^0-9.]/g, ""));
+            return total + (Number.isFinite(price) ? price : 299) * item.quantity;
+          }, 0);
+          paymentAmount.textContent = `$${orderPaymentTotal.toFixed(2)}`;
+          paymentAmountBox.hidden = false;
+          orderDetailsInput.value = [
             formText("cartTitle"),
-            ...items.map(([, item]) => `- ${item.name} | ${item.color} | ${formText("quantity")} ${item.quantity}`)
+            ...items.map(([, item]) => {
+              const price = String(item.price || "$299");
+              return `- ${item.name} | ${item.color} | ${price} x ${item.quantity} = $${((Number.parseFloat(price.replace(/[^0-9.]/g, "")) || 299) * item.quantity).toFixed(2)}`;
+            })
           ].join("\n");
           autoFilledCartDetails = true;
         } else {
           autoFilledCartDetails = false;
+          paymentAmount.textContent = "";
+          paymentAmountBox.hidden = true;
+          orderDetailsInput.value = "";
           statusEl.textContent = formText("noCart");
         }
+        submitBtn.disabled = items.length === 0;
       } catch (error) {
         autoFilledCartDetails = false;
+        paymentAmount.textContent = "";
+        paymentAmountBox.hidden = true;
+        orderDetailsInput.value = "";
         console.warn("Could not read the saved cart.", error);
         statusEl.textContent = formText("cartError");
+        submitBtn.disabled = true;
       }
     }
 
-    messageInput.addEventListener("input", () => {
-      autoFilledCartDetails = false;
-    });
     fillCartDetails();
 
     window.addEventListener("storage", (event) => {
@@ -493,22 +742,26 @@
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
+      if (submitBtn.disabled) return;
 
       const senderName = document.getElementById("senderName").value.trim();
       const recipientName = document.getElementById("recipientName").value.trim();
       const senderPhone = document.getElementById("senderPhone").value.trim();
       const recipientPhone = document.getElementById("recipientPhone").value.trim();
       const address = document.getElementById("address").value.trim();
-      const message = document.getElementById("message").value.trim();
+      const orderDetails = orderDetailsInput.value.trim();
+      const note = noteInput.value.trim();
       const kpayReceipt = document.getElementById("kpayReceipt").files[0];
       const text =
-        " Sender: " + senderName + "\n" +
-        " Sender phone: " + senderPhone + "\n" +
-        " Recipient: " + recipientName + "\n" +
-        " Recipient phone: " + recipientPhone + "\n" +
-        " Address: " + address + "\n" +
-        " Message: " + message + "\n" +
-        " KPay slip verification: Basic checks passed; manual admin verification required.";
+        `${formText("senderName")} ${senderName}\n` +
+        `${formText("senderPhone")} ${senderPhone}\n` +
+        `${formText("recipientName")} ${recipientName}\n` +
+        `${formText("recipientPhone")} ${recipientPhone}\n` +
+        `${formText("address")} ${address}\n\n` +
+        `${formText("orderSection")}:\n${orderDetails}\n\n` +
+        `${formText("noteSection")}: ${note || "-"}\n` +
+        `${formText("paymentTotal")} $${orderPaymentTotal.toFixed(2)}\n` +
+        formText("slipVerification");
 
       submitBtn.disabled = true;
       statusEl.textContent = formText("sending");
@@ -564,26 +817,42 @@
 
           statusEl.textContent = formText("success");
 
-          let orderItems = [];
-          try {
-            const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
-            orderItems = Array.isArray(savedCart)
-              ? savedCart
-                  .filter((entry) => Array.isArray(entry) && entry[1])
-                  .map(([key, item]) => ({
-                    key,
-                    name: item.name,
-                    color: item.color,
-                    quantity: item.quantity
-                  }))
-              : [];
-          } catch (error) {
-            console.warn("Could not read cart for order history.", error);
-          }
+          const orderItems = orderMode === "product"
+            ? directProduct && directProduct.name && directProduct.color
+              ? [{
+                  key: `${directProduct.name}::${directProduct.color}`,
+                  name: directProduct.name,
+                  color: directProduct.color,
+                  quantity: directProduct.quantity,
+                  price: directProduct.price
+                }]
+              : []
+            : (() => {
+                try {
+                  const savedCart = JSON.parse(localStorage.getItem("shoe-cart") || "[]");
+                  return Array.isArray(savedCart)
+                    ? savedCart
+                        .filter((entry) => Array.isArray(entry)
+                          && entry[1]
+                          && (!selectedOnly || selectedCartKeys.has(entry[0])))
+                        .map(([key, item]) => ({
+                          key,
+                          name: item.name,
+                          color: item.color,
+                          quantity: item.quantity,
+                          price: item.price || "$299"
+                        }))
+                    : [];
+                } catch (error) {
+                  console.warn("Could not read cart for order history.", error);
+                  return [];
+                }
+              })();
 
           window.parent.postMessage({
             type: "KODEX_ORDER_SUCCESS",
             order: {
+              mode: orderMode,
               id: `KDX-${Date.now().toString().slice(-8)}`,
               createdAt: new Date().toISOString(),
               senderName,
@@ -591,7 +860,9 @@
               recipientName,
               recipientPhone,
               address,
-              message,
+              message: note,
+              orderDetails,
+              paymentTotal: orderPaymentTotal,
               items: orderItems
             }
           }, "*");

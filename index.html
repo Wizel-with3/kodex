@@ -739,14 +739,14 @@
                                     <strong>hello@kodex.store</strong>
                                 </span>
                             </a>
-                            <a href="tel:+959123456789" class="contact-detail">
+                            <a href="tel:+959449742255" class="contact-detail">
                                 <span class="contact-icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
                                 <span>
                                     <small data-i18n="phoneLabel">Phone</small>
                                     <strong>+95 9 449 742 255</strong>
                                 </span>
                             </a>
-                            <a href="https://www.tiktok.com/@kodex.store" class="contact-detail" target="_blank" rel="noopener noreferrer">
+                            <a href="https://www.tiktok.com/@kodex1113" class="contact-detail" target="_blank" rel="noopener noreferrer">
                                 <span class="contact-icon" aria-hidden="true"><i class="fa-brands fa-tiktok"></i></span>
                                 <span>
                                     <small>TikTok</small>
@@ -861,6 +861,7 @@
             <div class="modal-content product-info-modal">
                 <div class="modal-header">
                     <h2 class="modal-title h4" id="productInfoTitle" data-i18n="productDetails">Product details</h2>
+                    <div id="productInfoColorCycle" class="product-info-color-cycle" aria-label="Available colors"></div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close product details"
                         data-i18n-aria-label="closeProductDetails"></button>
                 </div>
@@ -871,7 +872,7 @@
                                 <img id="productInfoImage" src="" alt="" />
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 product-info-details">
                             <p class="text-secondary mb-1" data-i18n="selectedStyle">Selected style</p>
                             <div class="product-info-title-row">
                                 <h3 id="productInfoName" class="h3 mb-0"></h3>
@@ -909,6 +910,9 @@
         </div>
         <div class="offcanvas-body d-flex flex-column">
             <p id="cartEmpty" class="text-secondary" data-i18n="cartEmpty">Your cart is empty.</p>
+            <p id="cartSelectHint" class="text-secondary small" data-i18n="selectCartItems" hidden>
+                Select the items you want to order.
+            </p>
             <ul id="cartItems" class="list-group list-group-flush" aria-live="polite"></ul>
             <button id="checkoutCart" class="btn btn-dark mt-3 icon-button" type="button" disabled>
                 <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>

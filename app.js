@@ -48,18 +48,24 @@ const translations = {
         yourCart: "Your cart",
         closeCart: "Close cart",
         cartEmpty: "Your cart is empty.",
+        selectCartItems: "Select the items you want to order.",
         order: "Order",
         clearCart: "Clear cart",
+        selectForOrder: "Select for order",
         orderHistory: "Order history",
         closeOrderHistory: "Close order history",
         orderHistoryEmpty: "No previous orders yet.",
         clearOrderHistory: "Clear history",
         orderSubmitted: "Submitted",
         orderItems: "Items",
+        paymentTotal: "Payment amount",
         details: "details",
         colors: "colors",
         showColor: "Show",
         quantity: "Quantity",
+        stockLabel: "Stock:",
+        inStock: "in stock",
+        outOfStock: "Out of stock",
         remove: "Remove",
         decrease: "Decrease quantity of",
         increase: "Increase quantity of",
@@ -120,18 +126,24 @@ const translations = {
         yourCart: "သင့်ဈေးခြင်း",
         closeCart: "ဈေးခြင်းပိတ်ရန်",
         cartEmpty: "ဈေးခြင်းထဲတွင် ပစ္စည်းမရှိသေးပါ။",
+        selectCartItems: "အော်ဒါတင်လိုသော ပစ္စည်းများကို ရွေးချယ်ပါ။",
         order: "အော်ဒါတင်မည်",
         clearCart: "ဈေးခြင်းရှင်းရန်",
+        selectForOrder: "အော်ဒါတင်ရန် ရွေးချယ်ပါ",
         orderHistory: "အော်ဒါမှတ်တမ်း",
         closeOrderHistory: "အော်ဒါမှတ်တမ်းပိတ်ရန်",
         orderHistoryEmpty: "ယခုအထိ အော်ဒါမရှိသေးပါ။",
         clearOrderHistory: "မှတ်တမ်းရှင်းရန်",
         orderSubmitted: "တင်ပြီး",
         orderItems: "ပစ္စည်းများ",
+        paymentTotal: "ပေးဆောင်ရမည့်ပမာဏ",
         details: "အသေးစိတ်",
         colors: "အရောင်များ",
         showColor: "ပြရန်",
         quantity: "အရေအတွက်",
+        stockLabel: "လက်ကျန်:",
+        inStock: "လက်ကျန်",
+        outOfStock: "လက်ကျန်မရှိ",
         remove: "ဖယ်ရှားရန်",
         decrease: "အရေအတွက် လျှော့ရန်",
         increase: "အရေအတွက် တိုးရန်",
@@ -161,16 +173,10 @@ const languageToggle = document.querySelector("#languageToggle");
 const themeToggle = document.querySelector("#themeToggle");
 const heroLogo = document.querySelector("#heroLogo");
 const siteNavbar = document.querySelector(".site-navbar");
-const shopSection = document.querySelector("#about");
 
 function updateNavbarOnScroll() {
     if (!siteNavbar) return;
     siteNavbar.classList.toggle("navbar-scrolled", window.scrollY > 32);
-
-    if (shopSection) {
-        const shopReached = shopSection.getBoundingClientRect().top <= siteNavbar.offsetHeight + 4;
-        siteNavbar.classList.toggle("navbar-shop-mode", shopReached);
-    }
 }
 
 function t(key) {
@@ -371,20 +377,91 @@ document.querySelectorAll(".image-gallery").forEach((gallery) => {
 /* ---------- Cart ---------- */
 const STORAGE_KEY = "shoe-cart";
 const ORDER_HISTORY_KEY = "kodex-order-history";
+const STOCK_KEY = "kodex-product-stock";
 const cart = new Map();
+const selectedCartItems = new Set();
+const stock = new Map();
 const cartCount = document.querySelector("#cartCount");
 const cartCountMobile = document.querySelector("#cartCountMobile");
 const cartItems = document.querySelector("#cartItems");
 const cartEmpty = document.querySelector("#cartEmpty");
+const cartSelectHint = document.querySelector("#cartSelectHint");
 const clearCartButton = document.querySelector("#clearCart");
 const checkoutCartButton = document.querySelector("#checkoutCart");
+
+function loadStock() {
+    let saved = [];
+    try {
+        saved = JSON.parse(localStorage.getItem(STOCK_KEY) || "[]");
+    } catch {
+        saved = [];
+    }
+
+    const savedStock = new Map(Array.isArray(saved) ? saved : []);
+    document.querySelectorAll(".image-container").forEach((card) => {
+        const productName = card.querySelector("p").childNodes[0].textContent.trim();
+        const key = `${productName}::${card.dataset.color}`;
+        const savedAmount = savedStock.get(key);
+        const amount = Number.isInteger(savedAmount) && savedAmount >= 0
+            ? savedAmount
+            : Math.floor(Math.random() * 20) + 1;
+        stock.set(key, amount);
+        card.dataset.stock = amount;
+        card.classList.toggle("is-out-of-stock", amount === 0);
+    });
+}
+
+function saveStock() {
+    try {
+        localStorage.setItem(STOCK_KEY, JSON.stringify([...stock]));
+    } catch {
+        /* stock still works for this visit */
+    }
+}
+
+function getStockAmount(name, color) {
+    return stock.get(`${name}::${color}`) ?? 0;
+}
+
+function getProductPrice(name, color) {
+    const card = [...document.querySelectorAll(".image-container")].find((item) => {
+        const itemName = item.querySelector("p").childNodes[0].textContent.trim();
+        return itemName === name && item.dataset.color === color;
+    });
+    return card?.dataset.price || "$299";
+}
+
+function parsePrice(price) {
+    const value = Number.parseFloat(String(price).replace(/[^0-9.]/g, ""));
+    return Number.isFinite(value) ? value : 299;
+}
+
+function updateProductInfoStock() {
+    const button = document.querySelector("#productInfoCartButton");
+    const orderButton = document.querySelector("#productInfoOrderButton");
+    const { name, color } = button.dataset;
+    const amount = getStockAmount(name, color);
+    const stockElement = document.querySelector("#productInfoStock");
+    if (stockElement) {
+        stockElement.textContent = amount > 0 ? `${amount} ${t("inStock")}` : t("outOfStock");
+        stockElement.classList.toggle("is-out", amount === 0);
+    }
+    if (orderButton) {
+        orderButton.disabled = amount === 0;
+    }
+}
 
 function loadCart() {
     try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
         saved.forEach(([key, item]) => {
             if (item && item.name && item.color && item.quantity > 0) {
-                cart.set(key, item);
+                const available = getStockAmount(item.name, item.color);
+                const quantity = Math.min(item.quantity, available);
+                if (quantity > 0) {
+                    cart.set(key, { ...item, quantity });
+                    selectedCartItems.add(key);
+                }
             }
         });
     } catch {
@@ -403,9 +480,11 @@ function saveCart() {
 function changeQuantity(key, delta) {
     const item = cart.get(key);
     if (!item) return;
-    item.quantity += delta;
+    const available = getStockAmount(item.name, item.color);
+    item.quantity = Math.min(available, item.quantity + delta);
     if (item.quantity <= 0) {
         cart.delete(key);
+        selectedCartItems.delete(key);
     }
     renderCart();
 }
@@ -421,17 +500,41 @@ function createQuantityButton(label, text, onClick) {
 }
 
 function renderCart() {
+    selectedCartItems.forEach((key) => {
+        if (!cart.has(key)) {
+            selectedCartItems.delete(key);
+        }
+    });
     const itemCount = [...cart.values()].reduce((total, item) => total + item.quantity, 0);
     cartCount.textContent = itemCount;
     cartCountMobile.textContent = itemCount;
     cartItems.replaceChildren();
     cartEmpty.hidden = cart.size > 0;
+    cartSelectHint.hidden = cart.size === 0;
     clearCartButton.disabled = cart.size === 0;
-    checkoutCartButton.disabled = cart.size === 0;
+    checkoutCartButton.disabled = selectedCartItems.size === 0;
 
     cart.forEach((item, key) => {
         const row = document.createElement("li");
         row.className = "list-group-item d-flex justify-content-between align-items-center gap-3";
+        row.classList.toggle("is-selected", selectedCartItems.has(key));
+
+        const selectLabel = document.createElement("label");
+        selectLabel.className = "cart-item-select flex-shrink-0";
+        const selectCheckbox = document.createElement("input");
+        selectCheckbox.type = "checkbox";
+        selectCheckbox.className = "form-check-input m-0";
+        selectCheckbox.checked = selectedCartItems.has(key);
+        selectCheckbox.setAttribute("aria-label", `${t("selectForOrder")}: ${item.name} (${item.color})`);
+        selectCheckbox.addEventListener("change", () => {
+            if (selectCheckbox.checked) {
+                selectedCartItems.add(key);
+            } else {
+                selectedCartItems.delete(key);
+            }
+            renderCart();
+        });
+        selectLabel.append(selectCheckbox);
 
         const details = document.createElement("div");
         details.className = "me-auto";
@@ -443,6 +546,9 @@ function renderCart() {
         const color = document.createElement("small");
         color.className = "text-secondary";
         color.textContent = item.color;
+        const price = document.createElement("div");
+        price.className = "small fw-semibold";
+        price.textContent = `${item.price || "$299"} x ${item.quantity}`;
 
         const controls = document.createElement("div");
         controls.className = "d-flex align-items-center gap-2";
@@ -465,16 +571,23 @@ function renderCart() {
         );
         removeButton.addEventListener("click", () => {
             cart.delete(key);
+            selectedCartItems.delete(key);
             renderCart();
         });
 
-        details.append(name, color);
+        details.append(name, color, price);
         controls.append(
             createQuantityButton(`${t("decrease")} ${label}`, "\u2212", () => changeQuantity(key, -1)),
             quantity,
-            createQuantityButton(`${t("increase")} ${label}`, "+", () => changeQuantity(key, 1)),
         );
-        row.append(details, controls, removeButton);
+        const increaseButton = createQuantityButton(
+            `${t("increase")} ${label}`,
+            "+",
+            () => changeQuantity(key, 1),
+        );
+        increaseButton.disabled = item.quantity >= getStockAmount(item.name, item.color);
+        controls.append(increaseButton);
+        row.append(selectLabel, details, controls, removeButton);
         cartItems.append(row);
     });
 
@@ -495,6 +608,9 @@ document.querySelectorAll(".buy-button").forEach((button) => {
         document.querySelector("#productInfoName").textContent = productName;
         document.querySelector("#productInfoColor").textContent = color;
 
+        const stockAmount = getStockAmount(productName, color);
+        card.classList.toggle("is-out-of-stock", stockAmount === 0);
+
         const infoImage = document.querySelector("#productInfoImage");
         infoImage.src = image.src;
         infoImage.alt = `${productName} in ${color}`;
@@ -504,20 +620,90 @@ document.querySelectorAll(".buy-button").forEach((button) => {
         document.querySelector("#productInfoCartButton").dataset.name = productName;
         document.querySelector("#productInfoCartButton").dataset.color = color;
         updateProductInfoCartButton();
+        updateProductInfoStock();
+
+        const colorCycle = document.querySelector("#productInfoColorCycle");
+        const galleryCards = [...card.closest(".image-gallery").querySelectorAll(".image-container")];
+        colorCycle.replaceChildren();
+        galleryCards.forEach((galleryCard, colorIndex) => {
+            const colorDot = document.createElement("button");
+            colorDot.type = "button";
+            colorDot.className = "color-dot";
+            colorDot.dataset.modalColor = galleryCard.dataset.color;
+            colorDot.setAttribute("aria-label", `${t("showColor")} ${galleryCard.dataset.color}`);
+            colorDot.style.setProperty("--swatch", getModalColorSwatch(galleryCard.dataset.color));
+            colorDot.classList.toggle("active", galleryCard === card);
+            colorDot.addEventListener("click", () => {
+                const selectedCard = galleryCards[colorIndex];
+                const selectedName = selectedCard.querySelector("p").childNodes[0].textContent.trim();
+                const selectedColor = selectedCard.dataset.color;
+                const selectedImage = selectedCard.querySelector("img");
+
+                document.querySelector("#productInfoName").textContent = selectedName;
+                document.querySelector("#productInfoColor").textContent = selectedColor;
+                infoImage.src = selectedImage.src;
+                infoImage.alt = `${selectedName} in ${selectedColor}`;
+                document.querySelector("#productInfoCartButton").dataset.name = selectedName;
+                document.querySelector("#productInfoCartButton").dataset.color = selectedColor;
+                colorCycle.querySelectorAll(".color-dot").forEach((dot, dotIndex) => {
+                    dot.classList.toggle("active", dotIndex === colorIndex);
+                });
+                updateProductInfoCartButton();
+                updateProductInfoStock();
+            });
+            colorCycle.append(colorDot);
+        });
 
         bootstrap.Modal.getOrCreateInstance("#productInfoModal").show();
     });
 });
 
+function getModalColorSwatch(colorName) {
+    const colorMap = {
+        black: "#202124",
+        white: "#ffffff",
+        red: "#d52b2b",
+        blue: "#2563eb",
+        navy: "#172554",
+        silver: "#a7adb4",
+        gray: "#7b8086",
+        grey: "#7b8086",
+        brown: "#7a4a32",
+        coffee: "#6f4e37",
+        green: "#2f855a",
+        orange: "#ea580c",
+        yellow: "#eab308",
+        gold: "#c5a047",
+        pink: "#ec4899",
+        bronze: "#a76d43",
+    };
+    const parts = colorName.toLowerCase().split(/\s*\/\s*/);
+    const colors = parts.map((part) => {
+        const exact = colorMap[part.trim()];
+        if (exact) return exact;
+        const match = Object.keys(colorMap).find((name) => part.includes(name));
+        return match ? colorMap[match] : "#c8cbd0";
+    });
+    if (colors.length === 1) return colors[0];
+    if (colors.length === 2) {
+        return `conic-gradient(from 90deg, ${colors[0]} 0deg 180deg, ${colors[1]} 180deg 360deg)`;
+    }
+    return `conic-gradient(${colors.map((color, index) =>
+        `${color} ${Math.round((index * 360) / colors.length)}deg ${Math.round(((index + 1) * 360) / colors.length)}deg`
+    ).join(", ")})`;
+}
+
 function updateProductInfoCartButton() {
     const button = document.querySelector("#productInfoCartButton");
     const { name, color } = button.dataset;
     const isInCart = Boolean(name && color && cart.has(`${name}::${color}`));
+    const available = getStockAmount(name, color);
     const label = isInCart ? t("removeFromCart") : t("addToCart");
     const icon = isInCart ? "fa-cart-minus" : "fa-cart-plus";
 
     button.innerHTML = `<i class="fa-solid ${icon}" aria-hidden="true"></i><span>${label}</span>`;
     button.classList.toggle("is-in-cart", isInCart);
+    button.disabled = !isInCart && available === 0;
     button.setAttribute(
         "aria-label",
         label,
@@ -531,47 +717,58 @@ document.querySelector("#productInfoCartButton").addEventListener("click", (even
 
     if (item) {
         cart.delete(key);
-    } else {
-        cart.set(key, { name, color, quantity: 1 });
+        selectedCartItems.delete(key);
+    } else if (getStockAmount(name, color) > 0) {
+        cart.set(key, { name, color, quantity: 1, price: getProductPrice(name, color) });
+        selectedCartItems.add(key);
     }
 
     renderCart();
     updateProductInfoCartButton();
 });
 
-document.querySelector("#productInfoOrderButton").addEventListener("click", (event) => {
+function openOrderForm(mode, product, selectedKeys = []) {
+    const orderFormFrame = document.querySelector("#orderFormFrame");
+    const formUrl = new URL(orderFormFrame.dataset.src, window.location.href);
+    formUrl.searchParams.set("mode", mode);
+    if (product) {
+        formUrl.searchParams.set("name", product.name);
+        formUrl.searchParams.set("color", product.color);
+        formUrl.searchParams.set("price", product.price);
+    }
+    if (mode === "cart") {
+        formUrl.searchParams.set("selectedOnly", "1");
+        selectedKeys.forEach((key) => formUrl.searchParams.append("key", key));
+    }
+    orderFormFrame.src = formUrl.href;
+    bootstrap.Modal.getOrCreateInstance(document.querySelector("#orderFormModal")).show();
+}
+
+document.querySelector("#productInfoOrderButton").addEventListener("click", () => {
     const { name, color } = document.querySelector("#productInfoCartButton").dataset;
     if (!name || !color) return;
+    if (getStockAmount(name, color) === 0) return;
 
-    const key = `${name}::${color}`;
-    const item = cart.get(key);
-    if (item) {
-        item.quantity += 1;
-    } else {
-        cart.set(key, { name, color, quantity: 1 });
-    }
-    renderCart();
-
-    const openOrderForm = () => {
-        const orderFormFrame = document.querySelector("#orderFormFrame");
-        if (orderFormFrame.getAttribute("src") === "about:blank") {
-            orderFormFrame.src = orderFormFrame.dataset.src;
-        }
-        bootstrap.Modal.getOrCreateInstance(document.querySelector("#orderFormModal")).show();
-    };
+    const product = { name, color, price: getProductPrice(name, color) };
 
     const productInfoModalElement = document.querySelector("#productInfoModal");
     if (productInfoModalElement.classList.contains("show")) {
-        productInfoModalElement.addEventListener("hidden.bs.modal", openOrderForm, { once: true });
+        productInfoModalElement.addEventListener(
+            "hidden.bs.modal",
+            () => openOrderForm("product", product),
+            { once: true },
+        );
         bootstrap.Modal.getOrCreateInstance(productInfoModalElement).hide();
     } else {
-        openOrderForm();
+        openOrderForm("product", product);
     }
 });
 
 clearCartButton.addEventListener("click", () => {
     cart.clear();
+    selectedCartItems.clear();
     renderCart();
+    updateProductInfoStock();
 });
 
 const orderHistoryList = document.querySelector("#orderHistoryList");
@@ -649,6 +846,13 @@ function renderOrderHistory() {
             items.append(row);
         });
 
+        if (order.paymentTotal !== undefined) {
+            const total = document.createElement("p");
+            total.className = "fw-bold mb-0 mt-2";
+            total.textContent = `${t("paymentTotal") || "Payment amount"}: $${Number(order.paymentTotal).toFixed(2)}`;
+            card.append(total);
+        }
+
         header.append(title, status);
         card.append(header, meta, details, itemsTitle, items);
         orderHistoryList.append(card);
@@ -674,13 +878,53 @@ window.addEventListener("message", (event) => {
     if (event.source !== document.querySelector("#orderFormFrame").contentWindow) return;
 
     const order = event.data.order;
+
+    (order.items || []).forEach((item) => {
+        const quantity = Number(item.quantity || 0);
+        const key = `${item.name}::${item.color}`;
+        if (!item.name || !item.color || quantity <= 0) return;
+
+        const remaining = Math.max(0, getStockAmount(item.name, item.color) - quantity);
+        stock.set(key, remaining);
+        document.querySelectorAll(".image-container").forEach((card) => {
+            const cardName = card.querySelector("p").childNodes[0].textContent.trim();
+            if (cardName === item.name && card.dataset.color === item.color) {
+                card.dataset.stock = remaining;
+            }
+        });
+    });
+    saveStock();
+
     orderHistory.unshift(order);
     orderHistory = orderHistory.slice(0, 50);
     saveOrderHistory();
     renderOrderHistory();
 
-    cart.clear();
+    if (!order.mode) {
+        cart.clear();
+        selectedCartItems.clear();
+    } else if (order.mode === "cart") {
+        (order.items || []).forEach((orderedItem) => {
+            const key = `${orderedItem.name}::${orderedItem.color}`;
+            const cartItem = cart.get(key);
+            if (!cartItem) return;
+
+            cartItem.quantity -= Number(orderedItem.quantity || 0);
+            if (cartItem.quantity <= 0) {
+                cart.delete(key);
+                selectedCartItems.delete(key);
+            }
+        });
+    }
+    cart.forEach((item, key) => {
+        item.quantity = Math.min(item.quantity, getStockAmount(item.name, item.color));
+        if (item.quantity <= 0) {
+            cart.delete(key);
+            selectedCartItems.delete(key);
+        }
+    });
     renderCart();
+    updateProductInfoStock();
 
     const orderFormModalElement = document.querySelector("#orderFormModal");
     const orderFormModal = bootstrap.Modal.getInstance(orderFormModalElement);
@@ -698,18 +942,16 @@ window.addEventListener("message", (event) => {
 });
 
 checkoutCartButton.addEventListener("click", () => {
-    if (cart.size === 0) return;
+    const selectedKeys = [...selectedCartItems].filter((key) => cart.has(key));
+    if (selectedKeys.length === 0) return;
 
     const shoppingCartPanel = document.querySelector("#shoppingCart");
-    const openOrderForm = () => {
-        const orderFormFrame = document.querySelector("#orderFormFrame");
-        if (orderFormFrame.getAttribute("src") === "about:blank") {
-            orderFormFrame.src = orderFormFrame.dataset.src;
-        }
-        bootstrap.Modal.getOrCreateInstance(document.querySelector("#orderFormModal")).show();
-    };
 
-    shoppingCartPanel.addEventListener("hidden.bs.offcanvas", openOrderForm, { once: true });
+    shoppingCartPanel.addEventListener(
+        "hidden.bs.offcanvas",
+        () => openOrderForm("cart", null, selectedKeys),
+        { once: true },
+    );
     bootstrap.Offcanvas.getOrCreateInstance(shoppingCartPanel).hide();
 });
 
@@ -721,6 +963,8 @@ contactForm.addEventListener("submit", () => {
     contactStatus.textContent = t("contactReady");
 });
 
+loadStock();
+saveStock();
 loadCart();
 renderCart();
 loadOrderHistory();
